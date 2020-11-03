@@ -28,13 +28,13 @@ namespace Completed
         
         public int columns = 32;                                         //Number of columns in our game board.
         public int rows = 32;                                            //Number of rows in our game board.
-        public Count wallCount = new Count (320, 640);                      //Lower and upper limit for our random number of walls per level.
-        public Count foodCount = new Count (7, 13);                      //Lower and upper limit for our random number of food items per level.
-        public GameObject exit;                                         //Prefab to spawn for exit.
+        public Count wallCount = new Count (320, 640);                     //Lower and upper limit for our random number of walls per level.
+        public Count foodCount = new Count (3, 10);                      //Lower and upper limit for our random number of food items per level.
+        public GameObject exit;                                          //Prefab to spawn for exit.
         
         // if we do it with background image, there is no need of floor tiles, no one water tile is added 
-        public GameObject waterTile;                                 //water prefabs.
-        public GameObject[] wallTiles;                                  //Array of wall prefabs.
+        public GameObject waterTile;                                 	//water prefabs.
+        public GameObject[] innerWallTiles;                                  //Array of wall prefabs.
         public GameObject[] foodTiles;                                  //Array of food prefabs.
         public GameObject[] enemyTiles;                                 //Array of enemy prefabs.
         public GameObject[] outerWallTiles;                             //Array of outer tile prefabs.
@@ -56,17 +56,17 @@ namespace Completed
                 for(int y = 1; y < rows-1; y++)
                 {
                     //At each index add a new Vector3 to our list with the x and y coordinates of that position.
-                    gridPositions.Add (new Vector3(x, y, 0f));
+                    gridPositions.Add(new Vector3(x, y, 0f));
                 }
             }
         }
         
         
-        //Sets up the outer walls and floor (background) of the game board.
+        //Sets up the outer walls and water tiles (background) of the game board.
         void BoardSetup ()
         {
             //Instantiate Board and set boardHolder to its transform.
-            boardHolder = new GameObject ("Board").transform;
+            boardHolder = new GameObject("Board").transform;
             
             //Loop along x axis, starting from -1 (to fill corner) with floor or outerwall edge tiles.
             for(int x = -1; x < columns + 1; x++)
@@ -78,10 +78,10 @@ namespace Completed
                     // Choose a random tile from our array of floor tile prefabs and prepare to instantiate it.
                     // GameObject toInstantiate = floorTiles[Random.Range (0,floorTiles.Length)];
                     
-                    GameObject toInstantiate = waterTile;
+                     GameObject toInstantiate = waterTile;
                     //Check if we current position is at board edge, if so choose a random outer wall prefab from our array of outer wall tiles.
                     if(x == -1 || x == columns || y == -1 || y == rows)
-                        toInstantiate = outerWallTiles [Random.Range (0, outerWallTiles.Length)];
+                         toInstantiate = outerWallTiles [Random.Range (0, outerWallTiles.Length)];
                     
                     //Instantiate the GameObject instance using the prefab chosen for toInstantiate at the Vector3 corresponding to current grid position in loop, cast it to GameObject.
                     GameObject instance =
@@ -89,6 +89,7 @@ namespace Completed
                     
                     //Set the parent of our newly instantiated object instance to boardHolder, this is just organizational to avoid cluttering hierarchy.
                     instance.transform.SetParent (boardHolder);
+                    
                 }
             }
         }
@@ -142,7 +143,7 @@ namespace Completed
             InitialiseList ();
             
             //Instantiate a random number of wall tiles based on minimum and maximum, at randomized positions.
-            LayoutObjectAtRandom (wallTiles, wallCount.minimum, wallCount.maximum);
+            LayoutObjectAtRandom (innerWallTiles, wallCount.minimum, wallCount.maximum);
             
             //Instantiate a random number of food tiles based on minimum and maximum, at randomized positions.
             LayoutObjectAtRandom (foodTiles, foodCount.minimum, foodCount.maximum);
@@ -151,7 +152,7 @@ namespace Completed
             int enemyCount = (int)Mathf.Log(level, 2f);
             
             //Instantiate a random number of enemies based on minimum and maximum, at randomized positions.
-            LayoutObjectAtRandom (enemyTiles, enemyCount, enemyCount);
+            //LayoutObjectAtRandom (enemyTiles, enemyCount, enemyCount);
             
             
             

@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+namespace Completed
+
+{
 public class GameManager : MonoBehaviour
 {
     
+    public BoardManager boardScript; 
     public GameObject PlayerSprite;
     
     public Text coinsText;
@@ -15,6 +19,8 @@ public class GameManager : MonoBehaviour
     public GameObject panelPlay;
     public GameObject panelLostLife;
     public GameObject panelGameOver;
+    
+    private int level = 1; // ok, change it 
     
     public static GameManager Instance { get; private set;}
     
@@ -46,11 +52,24 @@ public class GameManager : MonoBehaviour
     	SwitchState(State.INIT);
     }
     
+    void Awake() 
+    {
+    	boardScript = GetComponent<BoardManager>();
+    	Instance = this;
+    	DontDestroyOnLoad(gameObject);	// needed?
+    	InitGame();
+    	SwitchState(State.MENU);	
+    }
     // Start is called before the first frame update
     void Start()
     {
-    	Instance = this;
-    	SwitchState(State.MENU);
+    	// Instance = this;
+    	// SwitchState(State.MENU);
+    }
+    
+    void InitGame()
+    {
+    	boardScript.SetupScene(level);
     }
 
     void Update()
@@ -110,6 +129,7 @@ public class GameManager : MonoBehaviour
     		case State.PLAY:
     			break;
     		case State.LEVELCOMPLETED:
+    			level++;
     			SwitchState(State.LOADLEVEL, 2f);
     			break;
     		case State.LOADLEVEL:
@@ -117,6 +137,7 @@ public class GameManager : MonoBehaviour
     			SwitchState(State.PLAY);
     			break;
     		case State.GAMEOVER:
+    			level = 1;
     			panelGameOver.SetActive(true);
     			break;
     	}
@@ -143,4 +164,6 @@ public class GameManager : MonoBehaviour
     			break;
     	}
     }
+}
+
 }
