@@ -65,15 +65,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e2a08d02497ff4d8be470d601e59e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  columns: 32
-  rows: 32
-  wallCount:
-    minimum: 600
-    maximum: 640
+  columns: 9
+  rows: 9
   foodCount:
     minimum: 7
     maximum: 13
-  exit: {fileID: 812039726131869351, guid: caa1ba3c9f472b3449178098921a9590, type: 3}
+  playerPrefab: {fileID: 0}
+  exitTile: {fileID: 0}
   waterTile: {fileID: 6261557427309798708, guid: f4bf8b2f401823449a9ec21e85a1c27a,
     type: 3}
   innerWallTiles: []

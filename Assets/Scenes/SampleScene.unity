@@ -1289,6 +1289,28 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5857310560292003071, guid: 1ea579af95af5f24491c38eac29cb64a,
         type: 3}
+    - target: {fileID: 4200945928184455033, guid: eec3a1e47b3814b4898285d545bb09c1,
+        type: 3}
+      propertyPath: columns
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4200945928184455033, guid: eec3a1e47b3814b4898285d545bb09c1,
+        type: 3}
+      propertyPath: rows
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4200945928184455033, guid: eec3a1e47b3814b4898285d545bb09c1,
+        type: 3}
+      propertyPath: playerPrefab
+      value: 
+      objectReference: {fileID: 5325848639247637284, guid: 45523b56085758a4388f907041b3c36b,
+        type: 3}
+    - target: {fileID: 4200945928184455033, guid: eec3a1e47b3814b4898285d545bb09c1,
+        type: 3}
+      propertyPath: exitTile
+      value: 
+      objectReference: {fileID: 812039726131869351, guid: caa1ba3c9f472b3449178098921a9590,
+        type: 3}
     - target: {fileID: 4601629392409985940, guid: eec3a1e47b3814b4898285d545bb09c1,
         type: 3}
       propertyPath: m_Name

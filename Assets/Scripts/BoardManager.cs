@@ -28,26 +28,40 @@ namespace Completed
         
         public int columns = 32;                                         //Number of columns in our game board.
         public int rows = 32;                                            //Number of rows in our game board.
-        public Count wallCount = new Count (320, 640);                     //Lower and upper limit for our random number of walls per level.
         public Count foodCount = new Count (3, 10);                      //Lower and upper limit for our random number of food items per level.
-        public GameObject exit;                                          //Prefab to spawn for exit.
-        
+		
+		public GameObject playerPrefab;
+        public GameObject exitTile;                                      //Prefab to spawn for exit.
         // if we do it with background image, there is no need of floor tiles, no one water tile is added 
         public GameObject waterTile;                                 	//water prefabs.
-        public GameObject[] innerWallTiles;                                  //Array of wall prefabs.
+        public GameObject[] innerWallTiles;                             //Array of wall prefabs.
         public GameObject[] foodTiles;                                  //Array of food prefabs.
         public GameObject[] enemyTiles;                                 //Array of enemy prefabs.
         public GameObject[] outerWallTiles;                             //Array of outer tile prefabs.
         
         private Transform boardHolder;                                  //A variable to store a reference to the transform of our Board object.
         private List <Vector3> gridPositions = new List <Vector3> ();   //A list of possible locations to place tiles.
-        
-        
+    	// List to hold unvisited cells.
+   		private List<Vector3> unvisited = new List<Vector3>();			
+		private List<Vector3> visited = new List<Vector3>();			// will be the water tiles, since it is every second cell possible (and the one connecting two cells)
+    	// List to store 'stack' cells, cells being checked during generation.
+    	private List<Vector3> stack = new List<Vector3>();
+		
+        private Vector3 startCell = new Vector3(1, 1, 0f);
+		private Vector3 currentCell;
+    	private Vector3 checkCell;
+    	
+		// every second cell to cuz for now the walls are the same size as the "corridors", aka to make sure there's place for them 
+		// another option would be to make different 2D objects with walls (BoxCollider only on the surface of the wall) etc... 
+		
+    	private Vector3[] neighbourPositions = new Vector3[] { new Vector3(-2, 0, 0), new Vector3(2, 0, 0), new Vector3(0, 2, 0), new Vector3(0, -2, 0) };
+    	
         //Clears our list gridPositions and prepares it to generate a new board.
         void InitialiseList ()
         {
             //Clear our list gridPositions.
             gridPositions.Clear ();
+			int count = 0;
             
             //Loop through x axis (columns).
             for(int x = 1; x < columns-1; x++)
@@ -57,62 +71,62 @@ namespace Completed
                 {
                     //At each index add a new Vector3 to our list with the x and y coordinates of that position.
                     gridPositions.Add(new Vector3(x, y, 0f));
+					if(x % 2 == 1 && y % 2 == 1)
+						unvisited.Add(new Vector3(x, y, 0f));
+					count++;
                 }
             }
+			Debug.Log("grid: " + gridPositions.Count + "unvisited: " + unvisited.Count);
+			unvisited.Remove(startCell);
+			currentCell = startCell;
         }
         
         
-        //Sets up the outer walls and water tiles (background) of the game board.
+        //Sets up the outer walls of the game board.
         void BoardSetup ()
         {
             //Instantiate Board and set boardHolder to its transform.
             boardHolder = new GameObject("Board").transform;
             
             //Loop along x axis, starting from -1 (to fill corner) with floor or outerwall edge tiles.
-            for(int x = -1; x < columns + 1; x++)
+            for(int x = -1; x <= columns; x++)
             {
                 //Loop along y axis, starting from -1 to place floor or outerwall tiles.
-                for(int y = -1; y < rows + 1; y++)
+                for(int y = -1; y <= rows; y++)
                 {
-                	// no floor tiles if we put background image !! 
-                    // Choose a random tile from our array of floor tile prefabs and prepare to instantiate it.
-                    // GameObject toInstantiate = floorTiles[Random.Range (0,floorTiles.Length)];
                     
-                     GameObject toInstantiate = waterTile;
                     //Check if we current position is at board edge, if so choose a random outer wall prefab from our array of outer wall tiles.
                     if(x == -1 || x == columns || y == -1 || y == rows)
-                         toInstantiate = outerWallTiles [Random.Range (0, outerWallTiles.Length)];
-                    
-                    //Instantiate the GameObject instance using the prefab chosen for toInstantiate at the Vector3 corresponding to current grid position in loop, cast it to GameObject.
-                    GameObject instance =
+                    {
+                         GameObject toInstantiate = outerWallTiles [Random.Range (0, outerWallTiles.Length)];
+                    	 //Instantiate the GameObject instance using the prefab chosen for toInstantiate at the Vector3 corresponding to current grid position in loop, cast it to GameObject.
+                   		 GameObject instance =
                         Instantiate (toInstantiate, new Vector3 (x, y, 0f), Quaternion.identity) as GameObject;
-                    
-                    //Set the parent of our newly instantiated object instance to boardHolder, this is just organizational to avoid cluttering hierarchy.
-                    instance.transform.SetParent (boardHolder);
-                    
+                   		//Set the parent of our newly instantiated object instance to boardHolder, this is just organizational to avoid cluttering hierarchy.
+                    	instance.transform.SetParent (boardHolder);
+                    }
                 }
             }
         }
         
         
-        //RandomPosition returns a random position from our list gridPositions.
+        //RandomPosition returns a random position from our list visited - to place an enemy or an item on it 
         Vector3 RandomPosition ()
         {
-            //Declare an integer randomIndex, set it's value to a random number between 0 and the count of items in our List gridPositions.
-            int randomIndex = Random.Range (0, gridPositions.Count);
+            //Declare an integer randomIndex, set it's value to a random number between 0 and the count of items in the List
+            int randomIndex = Random.Range (0, visited.Count);
             
-            //Declare a variable of type Vector3 called randomPosition, set it's value to the entry at randomIndex from our List gridPositions.
-            Vector3 randomPosition = gridPositions[randomIndex];
+            //Declare a variable of type Vector3 called randomPosition, set it's value to the entry at randomIndex from the List
+            Vector3 randomPosition = visited[randomIndex];
             
             //Remove the entry at randomIndex from the list so that it can't be re-used.
-            gridPositions.RemoveAt (randomIndex);
-            
-            //Return the randomly selected Vector3 position.
+            visited.RemoveAt (randomIndex);
             return randomPosition;
         }
         
         
         //LayoutObjectAtRandom accepts an array of game objects to choose from along with a minimum and maximum range for the number of objects to create.
+		// used to layout items or enemies 
         void LayoutObjectAtRandom (GameObject[] tileArray, int minimum, int maximum)
         {
             //Choose a random number of objects to instantiate within the minimum and maximum limits
@@ -121,7 +135,6 @@ namespace Completed
             //Instantiate objects until the randomly chosen limit objectCount is reached
             for(int i = 0; i < objectCount; i++)
             {
-                //Choose a position for randomPosition by getting a random position from our list of available Vector3s stored in gridPosition
                 Vector3 randomPosition = RandomPosition();
                 
                 //Choose a random tile from tileArray and assign it to tileChoice
@@ -138,12 +151,20 @@ namespace Completed
         {
             //Creates the outer walls and floor.
             BoardSetup ();
-            
+            Debug.Log("board set up finished");
             //Reset our list of gridpositions.
             InitialiseList ();
-            
-            //Instantiate a random number of wall tiles based on minimum and maximum, at randomized positions.
-            LayoutObjectAtRandom (innerWallTiles, wallCount.minimum, wallCount.maximum);
+            Debug.Log("initialize list finished");
+			// here the magic happens
+            GenerateMaze(rows, columns);
+			Debug.Log("maze generated");
+			foreach(Vector3 v in visited)
+			{
+				Debug.Log(v);
+			}
+			LayoutWaterTiles();
+			LayoutExitTile();
+			LayoutInnerWalls();
             
             //Instantiate a random number of food tiles based on minimum and maximum, at randomized positions.
             LayoutObjectAtRandom (foodTiles, foodCount.minimum, foodCount.maximum);
@@ -152,16 +173,100 @@ namespace Completed
             int enemyCount = (int)Mathf.Log(level, 2f);
             
             //Instantiate a random number of enemies based on minimum and maximum, at randomized positions.
-            //LayoutObjectAtRandom (enemyTiles, enemyCount, enemyCount);
-            
-            
-            
-            // TODO: is the exit always at the same pos ?? kinda boring 
-            //Instantiate the exit tile in the upper right hand corner of our game board
-            Instantiate (exit, new Vector3 (columns - 1, rows - 1, 0f), Quaternion.identity);
-            
-            // another version would be to switch the corner each level (upper left - upper right)
-            Vector3 exitCorner = (level % 2 == 1) ? new Vector3(columns - 1, rows - 1, 0f) : new Vector3(1, rows - 1, 0f);
+            LayoutObjectAtRandom (enemyTiles, enemyCount, enemyCount);
         }
+		
+		private void GenerateMaze(int rows, int cols)
+		{
+			
+			// While we have unvisited cells.
+			while (unvisited.Count > 0)
+			{
+				List<Vector3> unvisitedNeighbours = GetUnvisitedNeighbours(currentCell);
+				Debug.Log("unvisitedNeighbours: " + unvisitedNeighbours.Count);
+				Debug.Log("unvisited size: " + unvisited.Count);
+				if (unvisitedNeighbours.Count > 0)
+				{
+					// Get a random unvisited neighbour.
+					checkCell = unvisitedNeighbours[Random.Range(0, unvisitedNeighbours.Count)];
+					// Add current cell to stack.
+					stack.Add(currentCell);
+					Debug.Log("add to stack: " + currentCell);
+					visited.Add(currentCell);
+					visited.Add(new Vector3(currentCell.x + (checkCell.x - currentCell.x) / 2, currentCell.y + (checkCell.y - currentCell.y) / 2, 0));
+					// Make currentCell the neighbour cell.
+					currentCell = checkCell;
+					Debug.Log("next cell:" + checkCell);
+					// Mark new current cell as visited.
+					unvisited.Remove(currentCell);
+				}
+				else if (stack.Count > 0)
+				{
+					// Make current cell the most recently added Cell from the stack.
+					currentCell = stack[stack.Count - 1];
+					// Remove it from stack.
+					stack.Remove(currentCell);
+					Debug.Log("remove from stack: " + currentCell);
+				}
+			}
+			
+		}
+		
+		private List<Vector3> GetUnvisitedNeighbours(Vector3 curCell)
+		{
+			List<Vector3> neighbours = new List<Vector3>();
+			Vector3 nCell = curCell;
+			Debug.Log("current  : " + nCell);
+			foreach (Vector3 p in neighbourPositions)
+			{
+				// Find position of neighbour on grid, relative to current.
+				Vector3 nPos = new Vector3(nCell.x + p.x, nCell.y + p.y, 0);
+				// If cell is unvisited.
+				if (unvisited.Contains(nPos)) neighbours.Add(nPos);
+			}
+			return neighbours;
+		}
+		
+		private void LayoutWaterTiles()
+		{
+			for(int i = 0; i < visited.Count; i++)
+            {
+                Vector3 position = visited[i];
+                Instantiate(waterTile, position, Quaternion.identity);
+				
+				// put also the exit (for now i am gonna leave the extra method below this one )
+				//if( i == visited.Count - 1)
+				//	Instantiate(exitTile, visited[visited.Count - 1], Quaternion.identity);
+            }
+            
+            // just for the pic and until we figure out the doors and all the details, optimize it later!!!!
+            
+			for(int x = 0; x < columns; x++)
+			{
+			    for(int y = 0; y < rows; y++)
+                {
+                    
+                    //Check if we current position is at board edge, if so choose a random outer wall prefab from our array of outer wall tiles.
+                    if(x == 0 || x == columns-1 || y == 0 || y == rows-1)
+                    {
+                         Instantiate(waterTile, new Vector3(x, y, 0), Quaternion.identity);
+                    }
+                }
+              }
+		}
+		
+		private void LayoutExitTile()
+		{
+			Instantiate(exitTile, visited[visited.Count - 1], Quaternion.identity);
+		}
+		
+		private void LayoutInnerWalls()
+		{
+			foreach (Vector3 vec in gridPositions)
+			{
+				if(!visited.Contains(vec))
+					Instantiate(innerWallTiles[Random.Range (0, innerWallTiles.Length)], vec, Quaternion.identity);
+			}
+		}
     }
 }
