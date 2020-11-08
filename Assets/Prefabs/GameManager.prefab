@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4601629392409985940
+--- !u!1 &3115815920790968860
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,9 +8,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4601629392409985942}
-  - component: {fileID: 4601629392409985941}
-  - component: {fileID: 4200945928184455033}
+  - component: {fileID: 3115815920790968862}
+  - component: {fileID: 3115815919380863797}
+  - component: {fileID: 3115815920790968861}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -18,13 +18,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4601629392409985942
+--- !u!4 &3115815920790968862
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4601629392409985940}
+  m_GameObject: {fileID: 3115815920790968860}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -32,49 +32,53 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4601629392409985941
+--- !u!114 &3115815919380863797
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4601629392409985940}
+  m_GameObject: {fileID: 3115815920790968860}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 176b309cb396d9f44bdc16c1991c363f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   boardScript: {fileID: 0}
-  PlayerSprite: {fileID: 5325848639247637284, guid: 45523b56085758a4388f907041b3c36b,
-    type: 3}
   coinsText: {fileID: 0}
   lifesText: {fileID: 0}
+  exit: {fileID: 812039726131869351, guid: caa1ba3c9f472b3449178098921a9590, type: 3}
   panelMenu: {fileID: 0}
   panelPlay: {fileID: 0}
   panelLostLife: {fileID: 0}
   panelGameOver: {fileID: 0}
---- !u!114 &4200945928184455033
+  exitReached: 0
+--- !u!114 &3115815920790968861
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4601629392409985940}
+  m_GameObject: {fileID: 3115815920790968860}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4e2a08d02497ff4d8be470d601e59e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  columns: 9
-  rows: 9
+  columns: 15
+  rows: 15
   foodCount:
     minimum: 7
     maximum: 13
-  playerPrefab: {fileID: 0}
-  exitTile: {fileID: 0}
+  playerPrefab: {fileID: 5325848639247637284, guid: 45523b56085758a4388f907041b3c36b,
+    type: 3}
+  exitTile: {fileID: 812039726131869351, guid: caa1ba3c9f472b3449178098921a9590, type: 3}
   waterTile: {fileID: 6261557427309798708, guid: f4bf8b2f401823449a9ec21e85a1c27a,
     type: 3}
-  innerWallTiles: []
+  innerWallTiles:
+  - {fileID: 5857310560292003071, guid: b66cd2b45805d2846b2bffc103e9905f, type: 3}
+  - {fileID: 5857310560292003071, guid: bcce6f12c694ba24b91550adb141bb90, type: 3}
+  - {fileID: 5857310560292003071, guid: 1ea579af95af5f24491c38eac29cb64a, type: 3}
   foodTiles:
   - {fileID: 3148011865448655443, guid: f36327fa7615dd841ae8c14e0a449ac4, type: 3}
   enemyTiles: []

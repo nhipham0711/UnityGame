@@ -10,7 +10,6 @@ public class GameManager : MonoBehaviour
 {
     
     public BoardManager boardScript; 
-    public GameObject PlayerSprite;
     
     public Text coinsText;
     public Text lifesText;
@@ -19,7 +18,9 @@ public class GameManager : MonoBehaviour
     public GameObject panelPlay;
     public GameObject panelLostLife;
     public GameObject panelGameOver;
+    public GameObject panelLevelCompleted;
     
+    public bool exitReached;
     private int level = 1; // ok, change it 
     
     public static GameManager Instance { get; private set;}
@@ -30,6 +31,7 @@ public class GameManager : MonoBehaviour
     
     private State _state;
     bool _isSwitchingState;
+    
     
     private int _coins;
     public int Coin
@@ -57,7 +59,7 @@ public class GameManager : MonoBehaviour
     	boardScript = GetComponent<BoardManager>();
     	Instance = this;
     	DontDestroyOnLoad(gameObject);	// needed?
-    	InitGame();
+    	// InitGame(); -> do it in the play state 
     	SwitchState(State.MENU);	
     }
     // Start is called before the first frame update
@@ -81,7 +83,12 @@ public class GameManager : MonoBehaviour
     		case State.INIT:
     			break;	
     		case State.PLAY:
-    			break;
+    			if(exitReached)
+    			{
+    				Debug.Log("exit reached in play");
+    				SwitchState(State.LEVELCOMPLETED);
+    			}
+				break;
     		case State.LEVELCOMPLETED:
     			break;
     		case State.LOSTLIFE:
@@ -123,18 +130,22 @@ public class GameManager : MonoBehaviour
     		case State.INIT:
     			Cursor.visible = false;
     			panelPlay.SetActive(true);
-    			Instantiate(PlayerSprite);
     			SwitchState(State.LOADLEVEL);
     			break;	
     		case State.PLAY:
+    			panelPlay.SetActive(true);
     			break;
     		case State.LEVELCOMPLETED:
+    			exitReached = false;
     			level++;
+    			// boardScript.ClearScene();
+    			panelLevelCompleted.SetActive(true);
     			SwitchState(State.LOADLEVEL, 2f);
     			break;
     		case State.LOADLEVEL:
     			// do other stuff
-    			SwitchState(State.PLAY);
+				InitGame();	// set up board 
+    			SwitchState(State.PLAY, 8f);
     			break;
     		case State.GAMEOVER:
     			level = 1;
@@ -153,10 +164,12 @@ public class GameManager : MonoBehaviour
     		case State.INIT:
     			break;	
     		case State.PLAY:
+    			panelPlay.SetActive(true);
     			break;
     		case State.LEVELCOMPLETED:
     			break;
     		case State.LOADLEVEL:
+    			panelLevelCompleted.SetActive(false);
     			break;
     		case State.GAMEOVER:
     			panelPlay.SetActive(false);
@@ -164,6 +177,7 @@ public class GameManager : MonoBehaviour
     			break;
     	}
     }
+    
 }
 
 }

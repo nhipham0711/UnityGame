@@ -61,8 +61,10 @@ namespace Completed
         {
             //Clear our list gridPositions.
             gridPositions.Clear ();
-			int count = 0;
-            
+			unvisited.Clear();
+			visited.Clear();
+			stack.Clear();
+			 
             //Loop through x axis (columns).
             for(int x = 1; x < columns-1; x++)
             {
@@ -73,8 +75,7 @@ namespace Completed
                     gridPositions.Add(new Vector3(x, y, 0f));
 					if(x % 2 == 1 && y % 2 == 1)
 						unvisited.Add(new Vector3(x, y, 0f));
-					count++;
-                }
+				}
             }
 			Debug.Log("grid: " + gridPositions.Count + "unvisited: " + unvisited.Count);
 			unvisited.Remove(startCell);
@@ -114,7 +115,7 @@ namespace Completed
         Vector3 RandomPosition ()
         {
             //Declare an integer randomIndex, set it's value to a random number between 0 and the count of items in the List
-            int randomIndex = Random.Range (0, visited.Count);
+            int randomIndex = Random.Range (0, visited.Count - 1);		// visited.Count - 1 : to exclude the exit tile, which is always the last one
             
             //Declare a variable of type Vector3 called randomPosition, set it's value to the entry at randomIndex from the List
             Vector3 randomPosition = visited[randomIndex];
@@ -149,31 +150,30 @@ namespace Completed
         //SetupScene initializes our level and calls the previous functions to lay out the game board
         public void SetupScene (int level)
         {
+        	DestroyAllGameObjects();
             //Creates the outer walls and floor.
             BoardSetup ();
             Debug.Log("board set up finished");
-            //Reset our list of gridpositions.
+            //Reset the grid positions, visited and unvisited lists
             InitialiseList ();
-            Debug.Log("initialize list finished");
+            Debug.Log("initialize lists finished");
 			// here the magic happens
             GenerateMaze(rows, columns);
 			Debug.Log("maze generated");
-			foreach(Vector3 v in visited)
-			{
-				Debug.Log(v);
-			}
 			LayoutWaterTiles();
 			LayoutExitTile();
 			LayoutInnerWalls();
+			Instantiate(playerPrefab);
             
             //Instantiate a random number of food tiles based on minimum and maximum, at randomized positions.
             LayoutObjectAtRandom (foodTiles, foodCount.minimum, foodCount.maximum);
-            
+            Debug.Log("items placed");
             //Determine number of enemies based on current level number, based on a logarithmic progression
             int enemyCount = (int)Mathf.Log(level, 2f);
             
             //Instantiate a random number of enemies based on minimum and maximum, at randomized positions.
-            LayoutObjectAtRandom (enemyTiles, enemyCount, enemyCount);
+            // LayoutObjectAtRandom (enemyTiles, enemyCount, enemyCount);		// here could be a bug with out of range, check wenn so weit NB!!!!
+			Debug.Log("enemies placed");
         }
 		
 		private void GenerateMaze(int rows, int cols)
@@ -183,20 +183,20 @@ namespace Completed
 			while (unvisited.Count > 0)
 			{
 				List<Vector3> unvisitedNeighbours = GetUnvisitedNeighbours(currentCell);
-				Debug.Log("unvisitedNeighbours: " + unvisitedNeighbours.Count);
-				Debug.Log("unvisited size: " + unvisited.Count);
+				// Debug.Log("unvisitedNeighbours: " + unvisitedNeighbours.Count);
+				// Debug.Log("unvisited size: " + unvisited.Count);
 				if (unvisitedNeighbours.Count > 0)
 				{
 					// Get a random unvisited neighbour.
 					checkCell = unvisitedNeighbours[Random.Range(0, unvisitedNeighbours.Count)];
 					// Add current cell to stack.
 					stack.Add(currentCell);
-					Debug.Log("add to stack: " + currentCell);
+					// Debug.Log("add to stack: " + currentCell);
 					visited.Add(currentCell);
 					visited.Add(new Vector3(currentCell.x + (checkCell.x - currentCell.x) / 2, currentCell.y + (checkCell.y - currentCell.y) / 2, 0));
 					// Make currentCell the neighbour cell.
 					currentCell = checkCell;
-					Debug.Log("next cell:" + checkCell);
+					// Debug.Log("next cell:" + checkCell);
 					// Mark new current cell as visited.
 					unvisited.Remove(currentCell);
 				}
@@ -206,7 +206,7 @@ namespace Completed
 					currentCell = stack[stack.Count - 1];
 					// Remove it from stack.
 					stack.Remove(currentCell);
-					Debug.Log("remove from stack: " + currentCell);
+					// Debug.Log("remove from stack: " + currentCell);
 				}
 			}
 			
@@ -216,12 +216,11 @@ namespace Completed
 		{
 			List<Vector3> neighbours = new List<Vector3>();
 			Vector3 nCell = curCell;
-			Debug.Log("current  : " + nCell);
 			foreach (Vector3 p in neighbourPositions)
 			{
 				// Find position of neighbour on grid, relative to current.
 				Vector3 nPos = new Vector3(nCell.x + p.x, nCell.y + p.y, 0);
-				// If cell is unvisited.
+				// If cell is unvisited - if it doesn't exist in the grid, it also won't be in the unvisited list 
 				if (unvisited.Contains(nPos)) neighbours.Add(nPos);
 			}
 			return neighbours;
@@ -233,15 +232,14 @@ namespace Completed
             {
                 Vector3 position = visited[i];
                 Instantiate(waterTile, position, Quaternion.identity);
-				
-				// put also the exit (for now i am gonna leave the extra method below this one )
+			}
+			// put also the exit (for now i am gonna leave the extra method below this one )
 				//if( i == visited.Count - 1)
 				//	Instantiate(exitTile, visited[visited.Count - 1], Quaternion.identity);
-            }
             
-            // just for the pic and until we figure out the doors and all the details, optimize it later!!!!
             
-			for(int x = 0; x < columns; x++)
+			// just for the pic and until we figure out the doors and all the details, optimize it later!!!!
+            for(int x = 0; x < columns; x++)
 			{
 			    for(int y = 0; y < rows; y++)
                 {
@@ -257,6 +255,7 @@ namespace Completed
 		
 		private void LayoutExitTile()
 		{
+			Debug.Log("exit at: " + visited[visited.Count - 1]);
 			Instantiate(exitTile, visited[visited.Count - 1], Quaternion.identity);
 		}
 		
@@ -268,5 +267,27 @@ namespace Completed
 					Instantiate(innerWallTiles[Random.Range (0, innerWallTiles.Length)], vec, Quaternion.identity);
 			}
 		}
+		
+		private void DestroyAllGameObjects()
+ 		{
+     		GameObject[] GameObjects = (FindObjectsOfType<GameObject>() as GameObject[]);
+ 
+     		for (int i = 0; i < GameObjects.Length; i++)
+     		{
+         		if(GameObjects[i].tag == "Wall" || GameObjects[i].tag == "Water" || GameObjects[i].tag == "Coin" || GameObjects[i].tag == "Player" || GameObjects[i].tag == "Exit")
+         			Destroy(GameObjects[i]);
+     		}
+ 		}
+ 		
+ 		public void ClearScene()
+ 		{
+     		GameObject[] GameObjects = (FindObjectsOfType<GameObject>() as GameObject[]);
+ 
+     		for (int i = 0; i < GameObjects.Length; i++)
+     		{
+         		if(GameObjects[i].tag == "Wall" || GameObjects[i].tag == "Water" || GameObjects[i].tag == "Coin" || GameObjects[i].tag == "Player" || GameObjects[i].tag == "Exit")
+         			Destroy(GameObjects[i]);
+     		}
+ 		}
     }
 }
