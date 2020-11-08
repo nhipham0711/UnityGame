@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     
     public Text coinsText;
     public Text lifesText;
+    public Text levelText;
     
     public GameObject panelMenu;
     public GameObject panelPlay;
@@ -20,7 +21,7 @@ public class GameManager : MonoBehaviour
     public GameObject panelGameOver;
     public GameObject panelLevelCompleted;
     
-    public bool exitReached;
+    [HideInInspector]public bool exitReached;
     private int level = 1; // ok, change it 
     
     public static GameManager Instance { get; private set;}
@@ -48,6 +49,13 @@ public class GameManager : MonoBehaviour
     	set {_lifes = value;
     	lifesText.text = "LIFES: " + _lifes;}
     }
+	
+	public int Level
+	{
+		get {return level;}
+    	set {level = value;
+    	levelText.text = "LEVEL: " + level;}
+	}
     
     public void PlayClicked()
     {
@@ -86,8 +94,10 @@ public class GameManager : MonoBehaviour
     			if(exitReached)
     			{
     				Debug.Log("exit reached in play");
+    				exitReached = false;
     				SwitchState(State.LEVELCOMPLETED);
     			}
+				// check for a lost life
 				break;
     		case State.LEVELCOMPLETED:
     			break;
@@ -128,6 +138,9 @@ public class GameManager : MonoBehaviour
     			panelMenu.SetActive(true);
     			break;
     		case State.INIT:
+				Coin = 0;
+				Lifes = 3;
+				Level = 1;
     			Cursor.visible = false;
     			panelPlay.SetActive(true);
     			SwitchState(State.LOADLEVEL);
@@ -137,18 +150,24 @@ public class GameManager : MonoBehaviour
     			break;
     		case State.LEVELCOMPLETED:
     			exitReached = false;
-    			level++;
-    			// boardScript.ClearScene();
+    			Level++;
     			panelLevelCompleted.SetActive(true);
-    			SwitchState(State.LOADLEVEL, 2f);
+    			SwitchState(State.LOADLEVEL);
     			break;
     		case State.LOADLEVEL:
     			// do other stuff
 				InitGame();	// set up board 
-    			SwitchState(State.PLAY, 8f);
+    			SwitchState(State.PLAY, 2f);
+    			break;
+			case State.LOSTLIFE:
+				Level = 1;
+				// but keep whatever we have earned till now, as in all the upgrades
     			break;
     		case State.GAMEOVER:
-    			level = 1;
+    			Level = 1;
+				// drop all the updates
+				Coin = 0;
+				Lifes = 3;
     			panelGameOver.SetActive(true);
     			break;
     	}
@@ -171,12 +190,19 @@ public class GameManager : MonoBehaviour
     		case State.LOADLEVEL:
     			panelLevelCompleted.SetActive(false);
     			break;
+			case State.LOSTLIFE:
+    			break;
     		case State.GAMEOVER:
     			panelPlay.SetActive(false);
     			panelGameOver.SetActive(false);
     			break;
     	}
     }
+	
+	public bool IsSwitchingStates()
+	{
+		return _isSwitchingState;
+	}
     
 }
 

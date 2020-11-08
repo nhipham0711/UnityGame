@@ -15,7 +15,7 @@ public class ExitScript : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D collision)
  	{
-     	if (collision.gameObject.CompareTag("Player"))
+     	if (collision.gameObject.CompareTag("Player") && !gm.IsSwitchingStates())	// second bool check is probably not beautiful, but out of desperation when debugging 
      	{
        	 	Debug.Log("exit reached");
        	 	gm.exitReached = true;

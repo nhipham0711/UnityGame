@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3966363295951223427}
   - component: {fileID: 9064247043510082545}
   - component: {fileID: 970576218503727907}
+  - component: {fileID: 8291550655075179562}
   m_Layer: 0
   m_Name: Star or Coin or whatever
   m_TagString: Coin
@@ -95,16 +96,29 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.07469368, y: -0.07469463}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.4, y: 2.4542856}
+    oldSize: {x: 0.96484375, y: 0.9863281}
     newSize: {x: 8.4, y: 8.59}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.4, y: 2.4542856}
+  m_Size: {x: 0.607336, y: 0.7363157}
   m_EdgeRadius: 0
+--- !u!114 &8291550655075179562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3148011865448655443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a668c18c52f441c4596ca40161fdfde2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gm: {fileID: 0}
