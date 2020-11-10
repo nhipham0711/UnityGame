@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour {
     void Start()
     {
     	_rigidBody = GetComponent<Rigidbody2D>();
+    	Vector3 pos = transform.position;
+    	Debug.Log("player: " + pos); 
     }
 	
     void Update()
