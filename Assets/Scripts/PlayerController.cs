@@ -35,5 +35,18 @@ public class PlayerController : MonoBehaviour {
              Object.Destroy(col.gameObject);
              
          }
-     }
+         else if (col.gameObject.CompareTag("Enemy"))
+            {
+
+                StartCoroutine(Attacked());
+            }
+    }
+    IEnumerator Attacked()
+    {
+
+        GetComponent<SpriteRenderer>().color = Color.red;
+        yield return new WaitForSeconds(0.5f);
+        GetComponent<SpriteRenderer>().color = Color.white;
+
+    }
 }

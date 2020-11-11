@@ -231,7 +231,7 @@ MonoBehaviour:
   m_LightType: 4
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
-  m_Color: {r: 0.047169805, g: 0.046279807, b: 0.046279807, a: 1}
+  m_Color: {r: 0.1509434, g: 0.14382343, b: 0.14382343, a: 1}
   m_Intensity: 1
   m_LightVolumeOpacity: 0
   m_ApplyToSortingLayers: 00000000199e08c6
@@ -1486,15 +1486,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3115815920790968861, guid: eec3a1e47b3814b4898285d545bb09c1,
         type: 3}
-      propertyPath: playerPrefab
-      value: 
-      objectReference: {fileID: 8696869040990042473, guid: 85b65c1ac4177e14794b2c2f7a85a2b5,
-        type: 3}
-    - target: {fileID: 3115815920790968861, guid: eec3a1e47b3814b4898285d545bb09c1,
-        type: 3}
       propertyPath: enemyTiles.Array.data[0]
       value: 
       objectReference: {fileID: 2142889590769531993, guid: 4311c4d71eb7bf941b7a376693b6166a,
+        type: 3}
+    - target: {fileID: 3115815920790968861, guid: eec3a1e47b3814b4898285d545bb09c1,
+        type: 3}
+      propertyPath: playerPrefab
+      value: 
+      objectReference: {fileID: 8696869040990042473, guid: 85b65c1ac4177e14794b2c2f7a85a2b5,
         type: 3}
     - target: {fileID: 3115815920790968862, guid: eec3a1e47b3814b4898285d545bb09c1,
         type: 3}
