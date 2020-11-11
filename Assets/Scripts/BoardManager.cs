@@ -172,7 +172,7 @@ namespace Completed
             int enemyCount = (int)Mathf.Log(level, 2f);
             
             //Instantiate a random number of enemies based on minimum and maximum, at randomized positions.
-            // LayoutObjectAtRandom (enemyTiles, enemyCount, enemyCount);		// here could be a bug with out of range, check wenn so weit NB!!!!
+            LayoutObjectAtRandom (enemyTiles, enemyCount, enemyCount+1);		// here could be a bug with out of range, check wenn so weit NB!!!!
 			Debug.Log("enemies placed");
         }
 		
