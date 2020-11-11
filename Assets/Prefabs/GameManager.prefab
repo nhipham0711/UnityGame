@@ -47,11 +47,12 @@ MonoBehaviour:
   boardScript: {fileID: 0}
   coinsText: {fileID: 0}
   lifesText: {fileID: 0}
-  exit: {fileID: 812039726131869351, guid: caa1ba3c9f472b3449178098921a9590, type: 3}
+  levelText: {fileID: 0}
   panelMenu: {fileID: 0}
   panelPlay: {fileID: 0}
   panelLostLife: {fileID: 0}
   panelGameOver: {fileID: 0}
+  panelLevelCompleted: {fileID: 0}
   exitReached: 0
 --- !u!114 &3115815920790968861
 MonoBehaviour:
