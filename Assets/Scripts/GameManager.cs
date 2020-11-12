@@ -23,14 +23,14 @@ public class GameManager : MonoBehaviour
     
     [HideInInspector]public bool exitReached;
     private int level = 1; // ok, change it 
-    
+        
     public static GameManager Instance { get; private set;}
     
     // Everything can be edited, it's just a first sketch  !!!
     
     public enum State {MENU, INIT, PLAY, LEVELCOMPLETED, LOADLEVEL, LOSTLIFE, GAMEOVER }
     
-    private State _state;
+    public State _state;
     bool _isSwitchingState;
     
     

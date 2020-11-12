@@ -3,39 +3,6 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-/*public class EnemyAttack : MonoBehaviour
-{*/
-/*public float speed;
-public bool moveRight;
-// Start is called before the first frame update
-
-// Update is called once per frame
-void Update()
-{
-    if (moveRight) {
-        transform.Translate(2 * speed * Time.deltaTime, 0, 0);
-
-    }
-    else {
-        transform.Translate(-2 * speed * Time.deltaTime, 0, 0);
-
-    }
-}
-void OnTriggerEnter2D(Collider2D col)
-{
-    if (col.gameObject.CompareTag("return")) 
-    {
-        if (moveRight)
-        {
-            moveRight = false;
-        }
-        else 
-        {
-            moveRight = true;
-
-        }
-    }
-}*/
 
 
 
