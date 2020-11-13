@@ -142,7 +142,8 @@ namespace Completed
                 GameObject tileChoice = tileArray[Random.Range (0, tileArray.Length)];
                 
                 //Instantiate tileChoice at the position returned by RandomPosition with no change in rotation
-                Instantiate(tileChoice, randomPosition, Quaternion.identity);
+                GameObject created = Instantiate(tileChoice, randomPosition, Quaternion.identity);
+				created.transform.SetParent(boardHolder);
             }
         }
         
@@ -231,7 +232,8 @@ namespace Completed
 			for(int i = 0; i < visited.Count; i++)
             {
                 Vector3 position = visited[i];
-                Instantiate(waterTile, position, Quaternion.identity);
+                GameObject water = Instantiate(waterTile, position, Quaternion.identity);
+                water.transform.SetParent(boardHolder.transform);
 			}
 			// put also the exit (for now i am gonna leave the extra method below this one )
 				//if( i == visited.Count - 1)
@@ -247,7 +249,8 @@ namespace Completed
                     //Check if we current position is at board edge, if so choose a random outer wall prefab from our array of outer wall tiles.
                     if(x == 0 || x == columns-1 || y == 0 || y == rows-1)
                     {
-                         Instantiate(waterTile, new Vector3(x, y, 0), Quaternion.identity);
+                         GameObject water = Instantiate(waterTile, new Vector3(x, y, 0), Quaternion.identity);
+						 water.transform.SetParent(boardHolder.transform);
                     }
                 }
               }
@@ -256,7 +259,8 @@ namespace Completed
 		private void LayoutExitTile()
 		{
 			Debug.Log("exit at: " + visited[visited.Count - 1]);
-			Instantiate(exitTile, visited[visited.Count - 1], Quaternion.identity);
+			GameObject ex = Instantiate(exitTile, visited[visited.Count - 1], Quaternion.identity);
+			ex.transform.SetParent(boardHolder.transform);
 		}
 		
 		private void LayoutInnerWalls()
@@ -264,7 +268,10 @@ namespace Completed
 			foreach (Vector3 vec in gridPositions)
 			{
 				if(!visited.Contains(vec))
-					Instantiate(innerWallTiles[Random.Range (0, innerWallTiles.Length)], vec, Quaternion.identity);
+				{
+					GameObject wall = Instantiate(innerWallTiles[Random.Range (0, innerWallTiles.Length)], vec, Quaternion.identity);
+					wall.transform.SetParent(boardHolder.transform);
+				}
 			}
 		}
 		

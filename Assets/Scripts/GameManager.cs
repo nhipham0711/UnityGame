@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
     {
     	get {return _coins;}
     	set {_coins = value; 
-    	coinsText.text = "COINS: " + _coins;}
+    	coinsText.text = "x " + _coins;}
     }
     
     private int _lifes;
