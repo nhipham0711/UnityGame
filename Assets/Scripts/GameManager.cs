@@ -12,7 +12,6 @@ public class GameManager : MonoBehaviour
     public BoardManager boardScript; 
     
     public Text coinsText;
-    public Text lifesText;
     public Text levelText;
     
     public GameObject panelMenu;
@@ -22,15 +21,16 @@ public class GameManager : MonoBehaviour
     public GameObject panelLevelCompleted;
     
     [HideInInspector]public bool exitReached;
+    [HideInInspector]public bool lostLife;
     private int level = 1; // ok, change it 
-        
+    [SerializeField]private Image healthbarImage;
+    [SerializeField]private Sprite[] healthbarImages;
     public static GameManager Instance { get; private set;}
     
-    // Everything can be edited, it's just a first sketch  !!!
     
     public enum State {MENU, INIT, PLAY, LEVELCOMPLETED, LOADLEVEL, LOSTLIFE, GAMEOVER }
     
-    public State _state;
+    private State _state;
     bool _isSwitchingState;
     
     
@@ -46,8 +46,7 @@ public class GameManager : MonoBehaviour
     public int Lifes
     {
     	get {return _lifes;}
-    	set {_lifes = value;
-    	lifesText.text = "LIFES: " + _lifes;}
+    	set {_lifes = value;}
     }
 	
 	public int Level
@@ -98,6 +97,15 @@ public class GameManager : MonoBehaviour
     				SwitchState(State.LEVELCOMPLETED);
     			}
 				// check for a lost life
+    			if(lostLife)
+    			{
+    				Lifes--;
+    				healthbarImage.sprite = healthbarImages[Lifes] as Sprite;
+    				if(Lifes < 0)	//  < 0 cuz the lifes are 6, but from 0 till 5 
+    				{
+    					SwitchState(State.GAMEOVER);
+    				}
+    			}
 				break;
     		case State.LEVELCOMPLETED:
     			break;
@@ -139,10 +147,11 @@ public class GameManager : MonoBehaviour
     			break;
     		case State.INIT:
 				Coin = 0;
-				Lifes = 3;
+				Lifes = 5;
 				Level = 1;
     			Cursor.visible = false;
     			panelPlay.SetActive(true);
+    			healthbarImage.sprite = healthbarImages[Lifes] as Sprite;	
     			SwitchState(State.LOADLEVEL);
     			break;	
     		case State.PLAY:
@@ -167,7 +176,7 @@ public class GameManager : MonoBehaviour
     			Level = 1;
 				// drop all the updates
 				Coin = 0;
-				Lifes = 3;
+				Lifes = 5;
     			panelGameOver.SetActive(true);
     			break;
     	}
@@ -203,7 +212,6 @@ public class GameManager : MonoBehaviour
 	{
 		return _isSwitchingState;
 	}
-    
 }
 
 }
