@@ -166,18 +166,19 @@ namespace Completed
 			LayoutInnerWalls();
 			Instantiate(playerPrefab);
             
+            
             //Instantiate a random number of food tiles based on minimum and maximum, at randomized positions.
             LayoutObjectAtRandom (foodTiles, foodCount.minimum, foodCount.maximum);
             Debug.Log("items placed");
             //Determine number of enemies based on current level number, based on a logarithmic progression
             int enemyCount = (int)Mathf.Log(level, 2f);
-            
+
             //Instantiate a random number of enemies based on minimum and maximum, at randomized positions.
-            // LayoutObjectAtRandom (enemyTiles, enemyCount, enemyCount);		// here could be a bug with out of range, check wenn so weit NB!!!!
-			Debug.Log("enemies placed");
+            LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount + 1);       // here could be a bug with out of range, check wenn so weit NB!!!!
+            Debug.Log("enemies placed");
         }
-		
-		private void GenerateMaze(int rows, int cols)
+
+        private void GenerateMaze(int rows, int cols)
 		{
 			
 			// While we have unvisited cells.
@@ -281,7 +282,7 @@ namespace Completed
  
      		for (int i = 0; i < GameObjects.Length; i++)
      		{
-         		if(GameObjects[i].tag == "Wall" || GameObjects[i].tag == "Water" || GameObjects[i].tag == "Coin" || GameObjects[i].tag == "Player" || GameObjects[i].tag == "Exit")
+         		if(GameObjects[i].tag == "Wall" || GameObjects[i].tag == "Water" || GameObjects[i].tag == "Coin" || GameObjects[i].tag == "Player" || GameObjects[i].tag == "Exit" || GameObjects[i].tag == "Enemy")
          			Destroy(GameObjects[i]);
      		}
  		}

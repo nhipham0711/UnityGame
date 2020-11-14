@@ -47,11 +47,12 @@ MonoBehaviour:
   boardScript: {fileID: 0}
   coinsText: {fileID: 0}
   lifesText: {fileID: 0}
-  exit: {fileID: 812039726131869351, guid: caa1ba3c9f472b3449178098921a9590, type: 3}
+  levelText: {fileID: 0}
   panelMenu: {fileID: 0}
   panelPlay: {fileID: 0}
   panelLostLife: {fileID: 0}
   panelGameOver: {fileID: 0}
+  panelLevelCompleted: {fileID: 0}
   exitReached: 0
 --- !u!114 &3115815920790968861
 MonoBehaviour:
@@ -70,7 +71,7 @@ MonoBehaviour:
   foodCount:
     minimum: 7
     maximum: 13
-  playerPrefab: {fileID: 5325848639247637284, guid: 45523b56085758a4388f907041b3c36b,
+  playerPrefab: {fileID: 8696869040990042473, guid: 85b65c1ac4177e14794b2c2f7a85a2b5,
     type: 3}
   exitTile: {fileID: 812039726131869351, guid: caa1ba3c9f472b3449178098921a9590, type: 3}
   waterTile: {fileID: 6261557427309798708, guid: f4bf8b2f401823449a9ec21e85a1c27a,
@@ -81,7 +82,8 @@ MonoBehaviour:
   - {fileID: 5857310560292003071, guid: 1ea579af95af5f24491c38eac29cb64a, type: 3}
   foodTiles:
   - {fileID: 3148011865448655443, guid: f36327fa7615dd841ae8c14e0a449ac4, type: 3}
-  enemyTiles: []
+  enemyTiles:
+  - {fileID: 2142889590769531993, guid: 4311c4d71eb7bf941b7a376693b6166a, type: 3}
   outerWallTiles:
   - {fileID: 5857310560292003071, guid: c0c655611ff6893478f5737c58cc8f7f, type: 3}
   - {fileID: 5857310560292003071, guid: ca1d5de06bb2890428b4d0d95c4bf90b, type: 3}
