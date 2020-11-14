@@ -142,7 +142,8 @@ namespace Completed
                 GameObject tileChoice = tileArray[Random.Range (0, tileArray.Length)];
                 
                 //Instantiate tileChoice at the position returned by RandomPosition with no change in rotation
-                Instantiate(tileChoice, randomPosition, Quaternion.identity);
+                GameObject created = Instantiate(tileChoice, randomPosition, Quaternion.identity);
+				created.transform.SetParent(boardHolder);
             }
         }
         
@@ -165,19 +166,18 @@ namespace Completed
 			LayoutInnerWalls();
 			Instantiate(playerPrefab);
             
-            
             //Instantiate a random number of food tiles based on minimum and maximum, at randomized positions.
             LayoutObjectAtRandom (foodTiles, foodCount.minimum, foodCount.maximum);
             Debug.Log("items placed");
             //Determine number of enemies based on current level number, based on a logarithmic progression
             int enemyCount = (int)Mathf.Log(level, 2f);
-
+            
             //Instantiate a random number of enemies based on minimum and maximum, at randomized positions.
-            LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount + 1);       // here could be a bug with out of range, check wenn so weit NB!!!!
-            Debug.Log("enemies placed");
+            // LayoutObjectAtRandom (enemyTiles, enemyCount, enemyCount);		// here could be a bug with out of range, check wenn so weit NB!!!!
+			Debug.Log("enemies placed");
         }
-
-        private void GenerateMaze(int rows, int cols)
+		
+		private void GenerateMaze(int rows, int cols)
 		{
 			
 			// While we have unvisited cells.
@@ -232,7 +232,8 @@ namespace Completed
 			for(int i = 0; i < visited.Count; i++)
             {
                 Vector3 position = visited[i];
-                Instantiate(waterTile, position, Quaternion.identity);
+                GameObject water = Instantiate(waterTile, position, Quaternion.identity);
+				water.transform.SetParent (boardHolder);
 			}
 			// put also the exit (for now i am gonna leave the extra method below this one )
 				//if( i == visited.Count - 1)
@@ -248,7 +249,8 @@ namespace Completed
                     //Check if we current position is at board edge, if so choose a random outer wall prefab from our array of outer wall tiles.
                     if(x == 0 || x == columns-1 || y == 0 || y == rows-1)
                     {
-                         Instantiate(waterTile, new Vector3(x, y, 0), Quaternion.identity);
+                         GameObject water = Instantiate(waterTile, new Vector3(x, y, 0), Quaternion.identity);
+						 water.transform.SetParent(boardHolder);
                     }
                 }
               }
@@ -257,15 +259,18 @@ namespace Completed
 		private void LayoutExitTile()
 		{
 			Debug.Log("exit at: " + visited[visited.Count - 1]);
-			Instantiate(exitTile, visited[visited.Count - 1], Quaternion.identity);
+			GameObject exit = Instantiate(exitTile, visited[visited.Count - 1], Quaternion.identity);
+			exit.transform.SetParent (boardHolder);
 		}
 		
 		private void LayoutInnerWalls()
 		{
+			GameObject sth = new GameObject();
 			foreach (Vector3 vec in gridPositions)
 			{
 				if(!visited.Contains(vec))
-					Instantiate(innerWallTiles[Random.Range (0, innerWallTiles.Length)], vec, Quaternion.identity);
+				sth = Instantiate(innerWallTiles[Random.Range (0, innerWallTiles.Length)], vec, Quaternion.identity);
+				sth.transform.SetParent (boardHolder);
 			}
 		}
 		
@@ -275,7 +280,7 @@ namespace Completed
  
      		for (int i = 0; i < GameObjects.Length; i++)
      		{
-         		if(GameObjects[i].tag == "Wall" || GameObjects[i].tag == "Water" || GameObjects[i].tag == "Coin" || GameObjects[i].tag == "Player" || GameObjects[i].tag == "Exit" || GameObjects[i].tag == "Enemy")
+         		if(GameObjects[i].tag == "Wall" || GameObjects[i].tag == "Water" || GameObjects[i].tag == "Coin" || GameObjects[i].tag == "Player" || GameObjects[i].tag == "Exit")
          			Destroy(GameObjects[i]);
      		}
  		}

@@ -10,6 +10,7 @@ TagManager:
   - return
   - Wall
   - Enemy
+  - Healthbar
   layers:
   - Default
   - TransparentFX
