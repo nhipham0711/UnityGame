@@ -51,7 +51,10 @@ namespace Completed
                 if (gm.Lifes <= 0)
                 {
                     //!!!!I tried to switch the state from the GameManager but still havent found any solution so I'm just gonna load the panelGameOver right now 
-                    gm.panelGameOver.SetActive(true);
+                    // gm.panelGameOver.SetActive(true);
+                    
+                    // 15.11: will do it analogcally to the exit with a boolean flag (for the GM)
+                    gm.lostLife = true;
                 }
             }
         }
