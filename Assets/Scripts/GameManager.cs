@@ -100,11 +100,14 @@ public class GameManager : MonoBehaviour
     			if(lostLife)
     			{
     				Lifes--;
-    				healthbarImage.sprite = healthbarImages[Lifes] as Sprite;
     				if(Lifes < 0)	//  < 0 cuz the lifes are 6, but from 0 till 5 
     				{
     					SwitchState(State.GAMEOVER);
     				}
+	    			else{
+	    				healthbarImage.sprite = healthbarImages[Lifes] as Sprite;
+	    				Debug.Log("change Image!!");
+	    			}
     				lostLife = false;
     			}
 				break;
