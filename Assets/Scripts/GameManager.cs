@@ -90,6 +90,7 @@ public class GameManager : MonoBehaviour
     		case State.INIT:
     			break;	
     		case State.PLAY:
+    			SetExitActiveIfCoinsCollected();
     			if(exitReached)
     			{
     				Debug.Log("exit reached in play");
@@ -215,6 +216,15 @@ public class GameManager : MonoBehaviour
 	public bool IsSwitchingStates()
 	{
 		return _isSwitchingState;
+	}
+	
+	private void SetExitActiveIfCoinsCollected()
+	{
+		GameObject[] coins = GameObject.FindGameObjectsWithTag("Coin");
+		if(coins.Length == 0)
+		{
+			boardScript.exitTile.SetActive(true);
+		}
 	}
 }
 

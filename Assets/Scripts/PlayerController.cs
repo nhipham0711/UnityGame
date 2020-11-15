@@ -20,7 +20,7 @@ namespace Completed
             gm = GameObject.Find("GameManager").GetComponent<GameManager>();
             _rigidBody = GetComponent<Rigidbody2D>();
             Vector3 pos = transform.position;
-            UnityEngine.Debug.Log("player: " + pos);
+            // UnityEngine.Debug.Log("player: " + pos);
         }
 
         void Update()
