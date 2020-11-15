@@ -20,7 +20,7 @@ namespace Completed
             gm = GameObject.Find("GameManager").GetComponent<GameManager>();
             _rigidBody = GetComponent<Rigidbody2D>();
             Vector3 pos = transform.position;
-            UnityEngine.Debug.Log("player: " + pos);
+            // UnityEngine.Debug.Log("player: " + pos);
         }
 
         void Update()
@@ -48,11 +48,15 @@ namespace Completed
 
                 StartCoroutine(Attacked());
                 gm.Lifes--;
-                if (gm.Lifes <= 0)
-                {
-                    //!!!!I tried to switch the state from the GameManager but still havent found any solution so I'm just gonna load the panelGameOver right now 
-                    gm.panelGameOver.SetActive(true);
-                }
+                // the GM would check and know what to do, if the lifes < 0 
+//                if (gm.Lifes <= 0)
+//               {
+//                    //!!!!I tried to switch the state from the GameManager but still havent found any solution so I'm just gonna load the panelGameOver right now 
+//                    // gm.panelGameOver.SetActive(true);
+//                    
+//                }
+                    // 15.11: will do it analogically to the exit with a boolean flag (for the GM) - only has to know that there was a collision with an enemy 
+                    gm.lostLife = true;
             }
         }
         IEnumerator Attacked()

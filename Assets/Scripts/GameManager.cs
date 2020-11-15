@@ -90,6 +90,7 @@ public class GameManager : MonoBehaviour
     		case State.INIT:
     			break;	
     		case State.PLAY:
+    			SetExitActiveIfCoinsCollected();
     			if(exitReached)
     			{
     				Debug.Log("exit reached in play");
@@ -100,11 +101,14 @@ public class GameManager : MonoBehaviour
     			if(lostLife)
     			{
     				Lifes--;
-    				healthbarImage.sprite = healthbarImages[Lifes] as Sprite;
     				if(Lifes < 0)	//  < 0 cuz the lifes are 6, but from 0 till 5 
     				{
     					SwitchState(State.GAMEOVER);
     				}
+	    			else{
+	    				healthbarImage.sprite = healthbarImages[Lifes] as Sprite;
+	    				Debug.Log("change Image!!");
+	    			}
     				lostLife = false;
     			}
 				break;
@@ -212,6 +216,15 @@ public class GameManager : MonoBehaviour
 	public bool IsSwitchingStates()
 	{
 		return _isSwitchingState;
+	}
+	
+	private void SetExitActiveIfCoinsCollected()
+	{
+		GameObject[] coins = GameObject.FindGameObjectsWithTag("Coin");
+		if(coins.Length == 0)
+		{
+			boardScript.exitTile.SetActive(true);
+		}
 	}
 }
 
