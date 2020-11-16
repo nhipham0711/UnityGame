@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     
     public GameObject panelMenu;
     public GameObject panelPlay;
-    public GameObject panelLostLife;
+    public GameObject panelUpgrade;
     public GameObject panelGameOver;
     public GameObject panelLevelCompleted;
     
@@ -25,10 +25,11 @@ public class GameManager : MonoBehaviour
     private int level = 1; // ok, change it 
     [SerializeField]private Image healthbarImage;
     [SerializeField]private Sprite[] healthbarImages;
+	[SerializeField]private int neededForUpgradeCoins = 10;
     public static GameManager Instance { get; private set;}
     
     
-    public enum State {MENU, INIT, PLAY, LEVELCOMPLETED, LOADLEVEL, LOSTLIFE, GAMEOVER }
+    public enum State {MENU, INIT, PLAY, LEVELCOMPLETED, LOADLEVEL, UPGRADE, GAMEOVER }
     
     private State _state;
     bool _isSwitchingState;
@@ -59,6 +60,20 @@ public class GameManager : MonoBehaviour
     public void PlayClicked()
     {
     	SwitchState(State.INIT);
+    }
+    
+    public void ButtonFasterClicked()
+    {
+    	Debug.Log("faster");
+    	// code for faster player
+    	SwitchState(State.PLAY);
+    }
+    
+    public void ButtonShieldClicked()
+    {
+    	Debug.Log("shield");
+    	// code for (color) shield for player
+    	SwitchState(State.PLAY);
     }
     
     void Awake() 
@@ -111,10 +126,14 @@ public class GameManager : MonoBehaviour
 	    			}
     				lostLife = false;
     			}
+				if( Coin == neededForUpgradeCoins)
+				{
+					SwitchState(State.UPGRADE);
+				}
 				break;
     		case State.LEVELCOMPLETED:
     			break;
-    		case State.LOSTLIFE:
+    		case State.UPGRADE:
     			break;
     		case State.LOADLEVEL:
     			break;
@@ -173,9 +192,11 @@ public class GameManager : MonoBehaviour
 				InitGame();	// set up board 
     			SwitchState(State.PLAY, 2f);
     			break;
-			case State.LOSTLIFE:
-				Level = 1;
-				// but keep whatever we have earned till now, as in all the upgrades
+			case State.UPGRADE:
+				panelPlay.SetActive(false);
+				PauseGame();	// test it tho... 
+				Cursor.visible = true;
+				panelUpgrade.SetActive(true);
     			break;
     		case State.GAMEOVER:
     			Level = 1;
@@ -204,7 +225,12 @@ public class GameManager : MonoBehaviour
     		case State.LOADLEVEL:
     			panelLevelCompleted.SetActive(false);
     			break;
-			case State.LOSTLIFE:
+			case State.UPGRADE:
+				Coin = 0;
+				panelUpgrade.SetActive(false);
+				panelPlay.SetActive(true);
+				Cursor.visible = false;
+				ResumeGame();	// test it tho... 
     			break;
     		case State.GAMEOVER:
     			panelPlay.SetActive(false);
@@ -226,6 +252,16 @@ public class GameManager : MonoBehaviour
 			boardScript.exitTile.SetActive(true);
 		}
 	}
+	
+	private void PauseGame()
+    {
+        Time.timeScale = 0;
+    }
+
+	private void ResumeGame()
+    {
+        Time.timeScale = 1;
+    }
 }
 
 }
