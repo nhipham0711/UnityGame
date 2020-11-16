@@ -38,12 +38,12 @@ namespace Completed
 
         void OnCollisionEnter2D(Collision2D col)
         {
-            if (col.gameObject.name == "fire-03")
+          /*  if (col.gameObject.name == "fire-03")
             {
                 Object.Destroy(col.gameObject);
 
             }
-            else if (col.gameObject.CompareTag("Enemy"))
+            else*/ if (col.gameObject.CompareTag("Enemy"))
             {
 
                 StartCoroutine(Attacked());
