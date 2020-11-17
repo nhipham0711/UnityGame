@@ -145,19 +145,18 @@ namespace Completed
                     {
                         SwitchState(State.UPGRADE);
                     }
-                    //did not work
+
                     if (chooseShield)
                     {
-
-                       boardScript.shieldTile.SetActive(true);
+						boardScript.playerPrefab.GetComponent<PlayerController>().useShield();
                         chooseShield = false;
-
-                      }
+                        
+                        // TODO: still include timeout or whatever
+                    }
                     if (useSpeed)
                     {
                         boardScript.playerPrefab.GetComponent<PlayerController>().useSpeed(1);
                         useSpeed = false;
-
                     }
 
                     break;

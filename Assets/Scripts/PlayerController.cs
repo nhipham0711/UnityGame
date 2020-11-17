@@ -14,6 +14,7 @@ namespace Completed
 
         private float horizontal;
         private float vertical;
+        private GameObject shield;
         
 
         void Start()
@@ -68,14 +69,17 @@ namespace Completed
             GetComponent<SpriteRenderer>().color = Color.white;
 
         }
-         /*public void useShield()
-        {
-            GameObject shield = gameObject.transform.Find("Shield").gameObject;
+        
+        public void useShield()
+        {	
+        	// get shield (it's a child of a player prefab, originally setActive = false 
+            shield = transform.GetChild(2).gameObject;
             if (shield == null) { UnityEngine.Debug.Log("Could not find Shield"); }
-            else { shield.SetActive(true); 
-                UnityEngine.Debug.Log("find Shield");
+            else { 
+            	shield.SetActive(true); 
+                UnityEngine.Debug.Log("found Shield");
             }
-        }*/
+        }
         public void useSpeed(float speedUp)
         {
            speed += speedUp;

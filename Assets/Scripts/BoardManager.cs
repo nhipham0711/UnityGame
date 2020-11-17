@@ -32,7 +32,6 @@ namespace Completed
 		
 		public GameObject playerPrefab;
         public GameObject exitTile;
-        public GameObject shieldTile;
         //Prefab to spawn for exit.
         // if we do it with background image, there is no need of floor tiles, no one water tile is added 
         public GameObject waterTile;                                 	//water prefabs.
@@ -168,7 +167,6 @@ namespace Completed
 			LayoutExitTile();
 			LayoutInnerWalls();
 			Instantiate(playerPrefab);
-            LayoutShieldTile();
             
             //Instantiate a random number of food tiles based on minimum and maximum, at randomized positions.
             LayoutObjectAtRandom (foodTiles, foodCount.minimum, foodCount.maximum);
@@ -267,13 +265,6 @@ namespace Completed
 			exitTile.transform.SetParent (boardHolder);
 			exitTile.SetActive(false);	// will be active only when a condition is fulfilled
 		}
-        private void LayoutShieldTile()
-        {
-            
-            shieldTile = Instantiate(shieldTile, playerPrefab.transform.position, Quaternion.identity);
-            exitTile.transform.SetParent(boardHolder);
-            shieldTile.SetActive(false);  // will be active only when a condition is fulfilled
-        }
 
         private void LayoutInnerWalls()
 		{
