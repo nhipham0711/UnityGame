@@ -31,13 +31,16 @@ namespace Completed
         public Count foodCount = new Count (3, 10);                      //Lower and upper limit for our random number of food items per level.
 		
 		public GameObject playerPrefab;
-        public GameObject exitTile;                                      //Prefab to spawn for exit.
+        public GameObject exitTile;
+        public GameObject shieldTile;
+        //Prefab to spawn for exit.
         // if we do it with background image, there is no need of floor tiles, no one water tile is added 
         public GameObject waterTile;                                 	//water prefabs.
         public GameObject[] innerWallTiles;                             //Array of wall prefabs.
         public GameObject[] foodTiles;                                  //Array of food prefabs.
         public GameObject[] enemyTiles;                                 //Array of enemy prefabs.
-        public GameObject[] outerWallTiles;                             //Array of outer tile prefabs.
+        public GameObject[] outerWallTiles; 
+        //Array of outer tile prefabs.
         
         private Transform boardHolder;                                  //A variable to store a reference to the transform of our Board object.
         private List <Vector3> gridPositions = new List <Vector3> ();   //A list of possible locations to place tiles.
@@ -165,6 +168,7 @@ namespace Completed
 			LayoutExitTile();
 			LayoutInnerWalls();
 			Instantiate(playerPrefab);
+            LayoutShieldTile();
             
             //Instantiate a random number of food tiles based on minimum and maximum, at randomized positions.
             LayoutObjectAtRandom (foodTiles, foodCount.minimum, foodCount.maximum);
@@ -263,8 +267,15 @@ namespace Completed
 			exitTile.transform.SetParent (boardHolder);
 			exitTile.SetActive(false);	// will be active only when a condition is fulfilled
 		}
-		
-		private void LayoutInnerWalls()
+        private void LayoutShieldTile()
+        {
+            
+            shieldTile = Instantiate(shieldTile, playerPrefab.transform.position, Quaternion.identity);
+            exitTile.transform.SetParent(boardHolder);
+            shieldTile.SetActive(false);  // will be active only when a condition is fulfilled
+        }
+
+        private void LayoutInnerWalls()
 		{
 			GameObject sth = new GameObject();
 			foreach (Vector3 vec in gridPositions)

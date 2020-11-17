@@ -30,7 +30,6 @@ public class Enemy : MonoBehaviour
     public float speed;
     public float attackRange;
     public float coolDown;
-    private bool chooseDir = false;
     private bool coolDownAttack = false;
     private Vector3 randomDir;
 

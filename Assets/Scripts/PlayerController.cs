@@ -14,6 +14,7 @@ namespace Completed
 
         private float horizontal;
         private float vertical;
+        
 
         void Start()
         {
@@ -66,6 +67,18 @@ namespace Completed
             yield return new WaitForSeconds(0.5f);
             GetComponent<SpriteRenderer>().color = Color.white;
 
+        }
+         /*public void useShield()
+        {
+            GameObject shield = gameObject.transform.Find("Shield").gameObject;
+            if (shield == null) { UnityEngine.Debug.Log("Could not find Shield"); }
+            else { shield.SetActive(true); 
+                UnityEngine.Debug.Log("find Shield");
+            }
+        }*/
+        public void useSpeed(float speedUp)
+        {
+           speed += speedUp;
         }
     }
 }

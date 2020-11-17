@@ -60,6 +60,9 @@ TagManager:
   - name: Units
     uniqueID: 558208295
     locked: 0
+  - name: Shield
+    uniqueID: 1689289845
+    locked: 0
   - name: Player
     uniqueID: 3090381779
     locked: 0

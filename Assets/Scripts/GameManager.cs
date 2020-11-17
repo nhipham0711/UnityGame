@@ -26,11 +26,13 @@ namespace Completed
         [SerializeField] private Image healthbarImage;
         [SerializeField] private Sprite[] healthbarImages;
         [SerializeField] private int neededForUpgradeCoins = 10;
+        public bool chooseShield = false;
+        public bool useSpeed = false;
         public static GameManager Instance { get; private set; }
 
 
         public enum State { MENU, INIT, PLAY, LEVELCOMPLETED, LOADLEVEL, UPGRADE, GAMEOVER }
-
+    
         private State _state;
         bool _isSwitchingState;
 
@@ -71,7 +73,7 @@ namespace Completed
         public void ButtonFasterClicked()
         {
             Debug.Log("faster");
-            // code for faster player
+            useSpeed = true;
             SwitchState(State.PLAY);
         }
 
@@ -79,6 +81,9 @@ namespace Completed
         {
             Debug.Log("shield");
             // code for (color) shield for player
+
+            chooseShield = true;
+            
             SwitchState(State.PLAY);
         }
 
@@ -112,6 +117,9 @@ namespace Completed
                     break;
                 case State.PLAY:
                     SetExitActiveIfCoinsCollected();
+                    
+                  
+
                     if (exitReached)
                     {
                         Debug.Log("exit reached in play");
@@ -137,6 +145,21 @@ namespace Completed
                     {
                         SwitchState(State.UPGRADE);
                     }
+                    //did not work
+                    if (chooseShield)
+                    {
+
+                       boardScript.shieldTile.SetActive(true);
+                        chooseShield = false;
+
+                      }
+                    if (useSpeed)
+                    {
+                        boardScript.playerPrefab.GetComponent<PlayerController>().useSpeed(1);
+                        useSpeed = false;
+
+                    }
+
                     break;
                 case State.LEVELCOMPLETED:
                     break;
@@ -183,10 +206,13 @@ namespace Completed
                     Cursor.visible = false;
                     panelPlay.SetActive(true);
                     healthbarImage.sprite = healthbarImages[Lifes] as Sprite;
+                  
+                   
                     SwitchState(State.LOADLEVEL);
                     break;
                 case State.PLAY:
                     panelPlay.SetActive(true);
+                 
                     break;
                 case State.LEVELCOMPLETED:
                     exitReached = false;
@@ -237,6 +263,7 @@ namespace Completed
                     panelUpgrade.SetActive(false);
                     panelPlay.SetActive(true);
                     Cursor.visible = false;
+
                     ResumeGame();   // test it tho... 
                     break;
                 case State.GAMEOVER:

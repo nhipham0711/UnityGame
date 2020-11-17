@@ -700,7 +700,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &501420135
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2199,6 +2199,12 @@ PrefabInstance:
       propertyPath: playerPrefab
       value: 
       objectReference: {fileID: 8696869040990042473, guid: 85b65c1ac4177e14794b2c2f7a85a2b5,
+        type: 3}
+    - target: {fileID: 3115815920790968861, guid: eec3a1e47b3814b4898285d545bb09c1,
+        type: 3}
+      propertyPath: shieldTile
+      value: 
+      objectReference: {fileID: 6274448170450725196, guid: 748c2da8716f6a1448ec1eab9d4a537e,
         type: 3}
     - target: {fileID: 3115815920790968862, guid: eec3a1e47b3814b4898285d545bb09c1,
         type: 3}
