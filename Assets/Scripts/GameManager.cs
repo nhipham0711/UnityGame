@@ -22,19 +22,18 @@ namespace Completed
 
         [HideInInspector] public bool exitReached;
         [HideInInspector] public bool lostLife;
-        private int level = 1; // ok, change it 
+		[HideInInspector] public bool chooseShield = false;
+        [HideInInspector] public bool useSpeed = false;
+		
         [SerializeField] private Image healthbarImage;
         [SerializeField] private Sprite[] healthbarImages;
         [SerializeField] private int neededForUpgradeCoins = 10;
-        public bool chooseShield = false;
-        public bool useSpeed = false;
+        
         public static GameManager Instance { get; private set; }
-
-
         public enum State { MENU, INIT, PLAY, LEVELCOMPLETED, LOADLEVEL, UPGRADE, GAMEOVER }
     
         private State _state;
-        bool _isSwitchingState;
+        private bool _isSwitchingState;
 
 
         private int _coins;
@@ -54,7 +53,8 @@ namespace Completed
             get { return _lifes; }
             set { _lifes = value; }
         }
-
+		
+		private int level = 1;  
         public int Level
         {
             get { return level; }
@@ -68,6 +68,12 @@ namespace Completed
         public void PlayClicked()
         {
             SwitchState(State.INIT);
+        }
+        
+        public void GoBackToMenuClicked()
+        {
+            Debug.Log("button go back to menu clicked");
+            SwitchState(State.MENU);
         }
 
         public void ButtonFasterClicked()
@@ -95,7 +101,7 @@ namespace Completed
                                             // InitGame(); -> do it in the play state 
             SwitchState(State.MENU);
         }
-        // Start is called before the first frame update
+        
         void Start()
         {
             // Instance = this;
@@ -117,9 +123,6 @@ namespace Completed
                     break;
                 case State.PLAY:
                     SetExitActiveIfCoinsCollected();
-                    
-                  
-
                     if (exitReached)
                     {
                         Debug.Log("exit reached in play");
@@ -136,7 +139,8 @@ namespace Completed
                         }
                         else
                         {
-                            healthbarImage.sprite = healthbarImages[Lifes] as Sprite;
+                            // maybe try with Dictionary and load from Resources 
+							healthbarImage.sprite = healthbarImages[Lifes] as Sprite;
                             Debug.Log("change Image!!");
                         }
                         lostLife = false;
@@ -167,10 +171,6 @@ namespace Completed
                 case State.LOADLEVEL:
                     break;
                 case State.GAMEOVER:
-                    if (Input.anyKeyDown)
-                    {
-                        SwitchState(State.MENU);
-                    }
                     break;
             }
         }
@@ -204,37 +204,36 @@ namespace Completed
                     Level = 1;
                     Cursor.visible = false;
                     panelPlay.SetActive(true);
-                    healthbarImage.sprite = healthbarImages[Lifes] as Sprite;
-                  
-                   
+                    healthbarImage.sprite = healthbarImages[Lifes] as Sprite;	// überflüssig?
                     SwitchState(State.LOADLEVEL);
                     break;
                 case State.PLAY:
+                	ResumeGame();
                     panelPlay.SetActive(true);
-                 
-                    break;
+					break;
                 case State.LEVELCOMPLETED:
-                    exitReached = false;
+                    //exitReached = false;
                     Level++;
                     panelLevelCompleted.SetActive(true);
                     SwitchState(State.LOADLEVEL);
                     break;
                 case State.LOADLEVEL:
                     // do other stuff
-                    InitGame(); // set up board 
+                    InitGame(); // set up board 		// consider: if player is every time instantiated, is there any info that should be kept with him
                     SwitchState(State.PLAY, 2f);
                     break;
                 case State.UPGRADE:
-                    panelPlay.SetActive(false);
                     PauseGame();    // test it tho... 
                     Cursor.visible = true;
                     panelUpgrade.SetActive(true);
                     break;
                 case State.GAMEOVER:
+                	PauseGame();
                     Level = 1;
                     // drop all the updates
                     Coin = 0;
-                    Lifes = 5;
+                    Lifes = 6;
+                    Cursor.visible = true;
                     panelGameOver.SetActive(true);
                     break;
             }
@@ -250,7 +249,7 @@ namespace Completed
                 case State.INIT:
                     break;
                 case State.PLAY:
-                    panelPlay.SetActive(true);
+                    panelPlay.SetActive(false);
                     break;
                 case State.LEVELCOMPLETED:
                     break;
@@ -260,13 +259,12 @@ namespace Completed
                 case State.UPGRADE:
                     Coin = 0;
                     panelUpgrade.SetActive(false);
-                    panelPlay.SetActive(true);
+                    //panelPlay.SetActive(true);
                     Cursor.visible = false;
 
                     ResumeGame();   // test it tho... 
                     break;
                 case State.GAMEOVER:
-                    panelPlay.SetActive(false);
                     panelGameOver.SetActive(false);
                     break;
             }

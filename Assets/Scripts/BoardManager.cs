@@ -167,7 +167,6 @@ namespace Completed
 			LayoutExitTile();
 			LayoutInnerWalls();
 			Instantiate(playerPrefab);
-            
             //Instantiate a random number of food tiles based on minimum and maximum, at randomized positions.
             LayoutObjectAtRandom (foodTiles, foodCount.minimum, foodCount.maximum);
             Debug.Log("items placed");

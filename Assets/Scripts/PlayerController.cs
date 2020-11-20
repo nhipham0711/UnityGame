@@ -11,15 +11,18 @@ namespace Completed
         public GameManager gm;
         public float speed;
         private Rigidbody2D _rigidBody;
+        private GameObject shield;
 
         private float horizontal;
         private float vertical;
-        private GameObject shield;
         
 
         void Start()
         {
             gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+			shield = transform.GetChild(2).gameObject;
+			UnityEngine.Debug.Log("found shield");
+			shield.SetActive(false);
             _rigidBody = GetComponent<Rigidbody2D>();
             Vector3 pos = transform.position;
             // UnityEngine.Debug.Log("player: " + pos);
@@ -72,13 +75,15 @@ namespace Completed
         
         public void useShield()
         {	
-        	// get shield (it's a child of a player prefab, originally setActive = false 
-            shield = transform.GetChild(2).gameObject;
-            if (shield == null) { UnityEngine.Debug.Log("Could not find Shield"); }
-            else { 
-            	shield.SetActive(true); 
-                UnityEngine.Debug.Log("found Shield");
-            }
+            shield.SetActive(true);
+			UnityEngine.Debug.Log("Shield activated");
+            Invoke("DeactivateShield", 5.0f);
+        }
+        
+        private void DeactivateShield()
+        {
+        	shield.SetActive(false);
+        	UnityEngine.Debug.Log("Shield deactivated");
         }
         public void useSpeed(float speedUp)
         {
