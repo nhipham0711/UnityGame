@@ -20,14 +20,11 @@ namespace Completed
         public GameObject panelGameOver;
         public GameObject panelLevelCompleted;
 
-        [HideInInspector] public bool exitReached;
-        [HideInInspector] public bool lostLife;
-		[HideInInspector] public bool chooseShield = false;
-        [HideInInspector] public bool useSpeed = false;
-		
         [SerializeField] private Image healthbarImage;
         [SerializeField] private Sprite[] healthbarImages;
         [SerializeField] private int neededForUpgradeCoins = 10;
+        
+        private GameObject pauseGameText;
         
         public static GameManager Instance { get; private set; }
         public enum State { MENU, INIT, PLAY, LEVELCOMPLETED, LOADLEVEL, UPGRADE, GAMEOVER }
@@ -106,6 +103,8 @@ namespace Completed
         
         void Start()
         {
+            pauseGameText = panelPlay.transform.GetChild(4).gameObject;
+            pauseGameText.SetActive(false);
             // Instance = this;
             // SwitchState(State.MENU);
         }
@@ -126,13 +125,16 @@ namespace Completed
                 case State.PLAY:
                     if (Input.GetKeyDown(KeyCode.Space))
        				{
-            			Debug.Log("Space key was pressed. Pause or resume game.");
             			if(Time.timeScale == 0)
             			{
             				ResumeGame();
+            				pauseGameText.SetActive(false);
+            				Debug.Log("Game resumed.");
             			}
             			else{
             				PauseGame();
+            				pauseGameText.SetActive(true);
+            				Debug.Log("Game paused.");
             			}
         			}
                     
