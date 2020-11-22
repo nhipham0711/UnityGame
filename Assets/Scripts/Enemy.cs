@@ -32,7 +32,7 @@ public class Enemy : MonoBehaviour
     public float coolDown;
     private bool coolDownAttack = false;
     private Vector3 randomDir;
-
+    public int countDown;
 
 
     
@@ -41,8 +41,8 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       
-       
+
+        countDown = 10;
     }
     
 
@@ -157,6 +157,30 @@ public class Enemy : MonoBehaviour
         coolDownAttack = true;
         yield return new WaitForSeconds(coolDown);
         coolDownAttack = false;
+    }
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        /*  if (col.gameObject.name == "fire-03")
+          {
+              Object.Destroy(col.gameObject);
+
+          }
+          else*/
+       
+        if (col.gameObject.CompareTag("Projectile"))
+        {
+
+            countDown--;
+            if (countDown == 9) {
+                GetComponent<SpriteRenderer>().color = Color.gray;
+            }
+            else if (countDown == 5) {
+                GetComponent<SpriteRenderer>().color = Color.red;
+            }
+            else if(countDown<=0) { 
+                Die(); 
+            }
+        }
     }
 
 }

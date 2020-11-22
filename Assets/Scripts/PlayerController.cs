@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Threading;
 using System.Diagnostics;
@@ -15,14 +15,14 @@ namespace Completed
 
         private float horizontal;
         private float vertical;
-        
+
 
         void Start()
         {
             gm = GameObject.Find("GameManager").GetComponent<GameManager>();
-			shield = transform.GetChild(2).gameObject;
-			UnityEngine.Debug.Log("found shield");
-			shield.SetActive(false);
+            shield = transform.GetChild(2).gameObject;
+            UnityEngine.Debug.Log("found shield");
+            shield.SetActive(false);
             _rigidBody = GetComponent<Rigidbody2D>();
             Vector3 pos = transform.position;
             // UnityEngine.Debug.Log("player: " + pos);
@@ -43,17 +43,19 @@ namespace Completed
 
         void OnCollisionEnter2D(Collision2D col)
         {
-          /*  if (col.gameObject.name == "fire-03")
-            {
-                Object.Destroy(col.gameObject);
+            /*  if (col.gameObject.name == "fire-03")
+              {
+                  Object.Destroy(col.gameObject);
 
-            }
-            else*/ if (col.gameObject.CompareTag("Enemy"))
+              }
+              else*/
+            if (col.gameObject.CompareTag("Enemy"))
             {
 
                 StartCoroutine(Attacked());
                 gm.LostLife();
             }
+
         }
         IEnumerator Attacked()
         {
@@ -63,22 +65,22 @@ namespace Completed
             GetComponent<SpriteRenderer>().color = Color.white;
 
         }
-        
+
         public void useShield()
-        {	
+        {
             shield.SetActive(true);
-			UnityEngine.Debug.Log("Shield activated");
+            UnityEngine.Debug.Log("Shield activated");
             Invoke("DeactivateShield", 5.0f);
         }
-        
+
         private void DeactivateShield()
         {
-        	shield.SetActive(false);
-        	UnityEngine.Debug.Log("Shield deactivated");
+            shield.SetActive(false);
+            UnityEngine.Debug.Log("Shield deactivated");
         }
         public void useSpeed(float speedUp)
         {
-           speed += speedUp;
+            speed += speedUp;
         }
     }
 }
