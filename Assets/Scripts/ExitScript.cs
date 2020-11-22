@@ -18,7 +18,7 @@ public class ExitScript : MonoBehaviour
      	if (collision.gameObject.CompareTag("Player") && !gm.IsSwitchingStates())	// second bool check is probably not beautiful, but out of desperation when debugging 
      	{
        	 	Debug.Log("exit reached");
-       	 	gm.exitReached = true;
+       	 	gm.WhenExitReached_Update();
      	}
  	}
 }

@@ -31,6 +31,7 @@ namespace Completed
         
         public static GameManager Instance { get; private set; }
         public enum State { MENU, INIT, PLAY, LEVELCOMPLETED, LOADLEVEL, UPGRADE, GAMEOVER }
+        private readonly int MAX_LEVELS = 6;
     
         private State _state;
         private bool _isSwitchingState;
@@ -78,24 +79,25 @@ namespace Completed
 
         public void ButtonFasterClicked()
         {
-            Debug.Log("faster");
-            useSpeed = true;
+            Debug.Log("faster chosen");
+			boardScript.playerPrefab.GetComponent<PlayerController>().useSpeed(1);
             SwitchState(State.PLAY);
         }
 
         public void ButtonShieldClicked()
         {
-            Debug.Log("shield");
+            Debug.Log("shield chosen");
             // code for (color) shield for player
-
-            chooseShield = true;
             
+            boardScript.playerPrefab.GetComponent<PlayerController>().useShield();
+            // TODO: still include timeout or whatever
             SwitchState(State.PLAY);
         }
 
         void Awake()
         {
             boardScript = GetComponent<BoardManager>();
+            boardScript.maxLevels = MAX_LEVELS;
             Instance = this;
             DontDestroyOnLoad(gameObject);  // needed?
                                             // InitGame(); -> do it in the play state 
@@ -122,47 +124,21 @@ namespace Completed
                 case State.INIT:
                     break;
                 case State.PLAY:
-                    SetExitActiveIfCoinsCollected();
-                    if (exitReached)
-                    {
-                        Debug.Log("exit reached in play");
-                        exitReached = false;
-                        SwitchState(State.LEVELCOMPLETED);
-                    }
-                    // check for a lost life
-                    if (lostLife)
-                    {
-                        Lifes--;
-                        if (Lifes < 0)  //  < 0 cuz the lifes are 6, but from 0 till 5 
-                        {
-                            SwitchState(State.GAMEOVER);
-                        }
-                        else
-                        {
-                            // maybe try with Dictionary and load from Resources 
-							healthbarImage.sprite = healthbarImages[Lifes] as Sprite;
-                            Debug.Log("change Image!!");
-                        }
-                        lostLife = false;
-                    }
-                    if (Coin == neededForUpgradeCoins)
-                    {
-                        SwitchState(State.UPGRADE);
-                    }
-
-                    if (chooseShield)
-                    {
-						boardScript.playerPrefab.GetComponent<PlayerController>().useShield();
-                        chooseShield = false;
-                        
-                        // TODO: still include timeout or whatever
-                    }
-                    if (useSpeed)
-                    {
-                        boardScript.playerPrefab.GetComponent<PlayerController>().useSpeed(1);
-                        useSpeed = false;
-                    }
-
+                    if (Input.GetKeyDown(KeyCode.Space))
+       				{
+            			Debug.Log("Space key was pressed. Pause or resume game.");
+            			if(Time.timeScale == 0)
+            			{
+            				ResumeGame();
+            			}
+            			else{
+            				PauseGame();
+            			}
+        			}
+                    
+// !!!!!------------ CHECKS FOR COINS; UPGRADES; LOST LIFES; REACHED EXIT-> MOVED TO THE METHODS FOR THE COLLISIONS, AKA WHEN THERE IS SUCH A METHOD FROM THE GM IS CALLED-----!!!!!!
+// can find the methods in the end (ActivateUpgrade(), SetExitActive() -> called from Coin script; LostLife() -> called from Player script; WhenExitReached_Update() -> called from Exit script                    
+                    
                     break;
                 case State.LEVELCOMPLETED:
                     break;
@@ -275,15 +251,41 @@ namespace Completed
             return _isSwitchingState;
         }
 
-        private void SetExitActiveIfCoinsCollected()
+        public void SetExitActive()
         {
-            GameObject[] coins = GameObject.FindGameObjectsWithTag("Coin");
-            if (coins.Length == 0)
-            {
-                boardScript.exitTile.SetActive(true);
-            }
+			boardScript.exitTile.SetActive(true);
+        }
+        
+        public int GetAmountCoinsForUpgrade()
+        {
+        	return neededForUpgradeCoins;
+        }
+        
+        public void ActivateUpgrade()
+        {
+        	SwitchState(State.UPGRADE);	
         }
 
+		public void LostLife()
+		{
+			Lifes--;
+            if (Lifes < 0)  //  < 0 cuz the lifes are 6, but from 0 till 5 
+            {
+            	SwitchState(State.GAMEOVER);
+            }
+            else
+            {
+            	// maybe try with Dictionary and load from Resources 
+				healthbarImage.sprite = healthbarImages[Lifes] as Sprite;
+                Debug.Log("change Image healthbar!!");
+			}
+		}
+		
+		public void WhenExitReached_Update()
+		{
+			Debug.Log("exit reached in play");
+			SwitchState(State.LEVELCOMPLETED);
+		}
         private void PauseGame()
         {
             Time.timeScale = 0;

@@ -58,6 +58,7 @@ namespace Completed
 		
     	private Vector3[] neighbourPositions = new Vector3[] { new Vector3(-2, 0, 0), new Vector3(2, 0, 0), new Vector3(0, 2, 0), new Vector3(0, -2, 0) };
     	
+    	[HideInInspector]public int maxLevels; 
         //Clears our list gridPositions and prepares it to generate a new board.
         void InitialiseList ()
         {
@@ -164,7 +165,7 @@ namespace Completed
             GenerateMaze(rows, columns);
 			Debug.Log("maze generated");
 			LayoutWaterTiles();
-			LayoutExitTile();
+			LayoutExitTile(level);
 			LayoutInnerWalls();
 			Instantiate(playerPrefab);
             //Instantiate a random number of food tiles based on minimum and maximum, at randomized positions.
@@ -257,12 +258,20 @@ namespace Completed
               }
 		}
 		
-		private void LayoutExitTile()
+		private void LayoutExitTile(int level)
 		{
-			Debug.Log("exit at: " + visited[visited.Count - 1]);
-			exitTile = Instantiate(exitTile, visited[visited.Count - 1], Quaternion.identity);
-			exitTile.transform.SetParent (boardHolder);
-			exitTile.SetActive(false);	// will be active only when a condition is fulfilled
+			if(level == maxLevels)
+			{
+				// put Nemo in the end instead of an exit 
+				// maybe also some particles around him, if you feel like it 
+			}
+			else 
+			{
+				Debug.Log("exit at: " + visited[visited.Count - 1]);
+				exitTile = Instantiate(exitTile, visited[visited.Count - 1], Quaternion.identity);
+				exitTile.transform.SetParent (boardHolder);
+				exitTile.SetActive(false);	// will be active only when a condition is fulfilled
+			}
 		}
 
         private void LayoutInnerWalls()
