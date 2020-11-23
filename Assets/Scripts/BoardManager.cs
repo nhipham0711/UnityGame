@@ -25,12 +25,12 @@ namespace Completed
             }
         }
 
-
         public int columns = 32;                                         //Number of columns in our game board.
         public int rows = 32;                                            //Number of rows in our game board.
         public Count foodCount = new Count(3, 10);                      //Lower and upper limit for our random number of food items per level.
 
         public GameObject playerPrefab;
+        public GameObject bossPrefab;
         public GameObject exitTile;
         //Prefab to spawn for exit.
         // if we do it with background image, there is no need of floor tiles, no one water tile is added 
@@ -177,6 +177,28 @@ namespace Completed
             //Instantiate a random number of enemies based on minimum and maximum, at randomized positions.
             LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount);       // here could be a bug with out of range, check wenn so weit NB!!!!
             Debug.Log("enemies placed");
+        }
+
+        public void SetupBossScene()
+        {
+            DestroyAllGameObjects();
+            //Creates the outer walls and floor.
+            BoardSetup();
+            //Reset the grid positions, visited and unvisited lists
+            InitialiseList();
+            GenerateMaze(rows, columns);
+            //Layout water tiles
+            for (int x = 0; x < columns; x++)
+            {
+                for (int y = 0; y < rows; y++)
+                {
+                    GameObject water = Instantiate(waterTile, new Vector3(x, y, 0), Quaternion.identity);
+                    water.transform.SetParent(boardHolder);
+                }
+            }
+            Instantiate(playerPrefab);
+            GameObject boss = Instantiate(bossPrefab, RandomPosition(), Quaternion.identity);
+            boss.transform.SetParent(boardHolder);
         }
 
         private void GenerateMaze(int rows, int cols)

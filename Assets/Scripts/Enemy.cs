@@ -125,7 +125,7 @@ public class Enemy : MonoBehaviour
     void Follow()
     {
         
-            transform.position = Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(this.transform.position, player.transform.position, speed * Time.deltaTime);
         }
     
 
@@ -167,7 +167,7 @@ public class Enemy : MonoBehaviour
           }
           else*/
        
-        if (col.gameObject.CompareTag("Projectile"))
+       /*  if (col.gameObject.CompareTag("Projectile"))
         {
 
             countDown--;
@@ -180,7 +180,7 @@ public class Enemy : MonoBehaviour
             else if(countDown<=0) { 
                 Die(); 
             }
-        }
+        } */
     }
 
 }

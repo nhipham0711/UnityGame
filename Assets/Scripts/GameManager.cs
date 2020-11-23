@@ -23,6 +23,8 @@ namespace Completed
         [SerializeField] private Image healthbarImage;
         [SerializeField] private Sprite[] healthbarImages;
         [SerializeField] private int neededForUpgradeCoins = 10;
+
+        public int bossLevel;
         
         private GameObject pauseGameText;
         
@@ -111,7 +113,12 @@ namespace Completed
 
         void InitGame()
         {
-            boardScript.SetupScene(level);
+            if (level == bossLevel)
+            {
+                boardScript.SetupBossScene();
+            } else {
+                boardScript.SetupScene(level);
+            }
         }
 
         void Update()
