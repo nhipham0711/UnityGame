@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 9063583972519869661}
   - component: {fileID: 8869152801911253148}
   m_Layer: 0
-  m_Name: Boss(Clone)
+  m_Name: Boss
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -181,3 +181,4 @@ MonoBehaviour:
     type: 3}
   waterBallOrigin: {fileID: 3994548377476132913}
   shootRate: 1
+  lifes: 3

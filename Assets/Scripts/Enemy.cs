@@ -169,7 +169,7 @@ public class Enemy : MonoBehaviour
        
        /*  if (col.gameObject.CompareTag("Projectile"))
         {
-
+			Destroy(col.gameObject);
             countDown--;
             if (countDown == 9) {
                 GetComponent<SpriteRenderer>().color = Color.gray;

@@ -12,16 +12,17 @@ public class Boss : MonoBehaviour
     public float shootRate = 1f;
     private float nextShootTime;
     private GameObject player;
+    [SerializeField] private int lifes;
     // Start is called before the first frame update
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
         float distanceFromPlayer = Vector2.Distance(player.transform.position, this.transform.position);
         if (distanceFromPlayer <= lineOfSite && distanceFromPlayer >= shootingRange)
         {
@@ -44,4 +45,16 @@ public class Boss : MonoBehaviour
 		Instantiate(waterBall, waterBallOrigin.transform.position, Quaternion.identity);
         nextShootTime = Time.time + shootRate;
 	}
+	
+	void OnCollisionEnter2D(Collision2D col)
+    {
+       if (col.gameObject.CompareTag("Projectile"))
+        {
+        	lifes--;
+            GetComponent<SpriteRenderer>().color = Color.gray;
+            if(lifes <= 0) { 
+                Destroy(gameObject); 
+            }
+        } 
+    }
 }
