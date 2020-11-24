@@ -337,7 +337,7 @@ MonoBehaviour:
   shield: {fileID: 3936535029407742497}
   bulletPrefab: {fileID: 3351464572226115269, guid: 450b52436a339b340821b2354c343ab7,
     type: 3}
-  bulletSpeed: 8
+  bulletSpeed: 8.08
 --- !u!50 &5769827317583291949
 Rigidbody2D:
   serializedVersion: 4
