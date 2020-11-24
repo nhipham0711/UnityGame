@@ -11,6 +11,8 @@ TagManager:
   - Wall
   - Enemy
   - Healthbar
+  - Projectile
+  - Nemo
   layers:
   - Default
   - TransparentFX

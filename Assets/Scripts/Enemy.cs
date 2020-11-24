@@ -42,7 +42,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
 
-        countDown = 10;
+        countDown = 3;
     }
     
 
@@ -160,29 +160,23 @@ public class Enemy : MonoBehaviour
     }
     void OnCollisionEnter2D(Collision2D col)
     {
-        /*  if (col.gameObject.name == "fire-03")
-          {
-              Object.Destroy(col.gameObject);
-
-          }
-          else*/
-       
        if (col.gameObject.CompareTag("Projectile"))
         {
 			Debug.Log("bullet hitting an enemy");
 			Destroy(col.gameObject);
             countDown--;
-            if (countDown == 9) {
+            Debug.Log("enemy life: " + countDown);
+            if (countDown == 2) {
                 GetComponent<SpriteRenderer>().color = Color.gray;
             }
-            else if (countDown == 5) {
+            else if (countDown == 1) {
                 GetComponent<SpriteRenderer>().color = Color.red;
             }
             else if(countDown<=0) { 
                 Die(); 
             }
         }
+        
     }
-
 }
 

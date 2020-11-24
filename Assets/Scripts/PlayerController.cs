@@ -16,6 +16,7 @@ namespace Completed
 		[SerializeField] private float bulletSpeed;
         private float horizontal;
         private float vertical;
+        private bool shieldActive = false;
 
 
         void Start()
@@ -59,17 +60,16 @@ namespace Completed
 
         void OnCollisionEnter2D(Collision2D col)
         {
-            /*  if (col.gameObject.name == "fire-03")
-              {
-                  Object.Destroy(col.gameObject);
-
-              }
-              else*/
-            if (col.gameObject.CompareTag("Enemy"))
+            if (col.gameObject.CompareTag("Enemy") && !shieldActive)
             {
 
                 StartCoroutine(Attacked());
                 gm.LostLife();
+            }
+            
+            if (col.gameObject.CompareTag("Nemo") )
+            {
+                gm.NemoWasFound();
             }
 
         }
@@ -84,6 +84,7 @@ namespace Completed
 
         public void useShield()
         {
+            shieldActive = true;
             shield.SetActive(true);
             UnityEngine.Debug.Log("Shield activated");
             Invoke("DeactivateShield", 5.0f);
@@ -91,6 +92,7 @@ namespace Completed
 
         private void DeactivateShield()
         {
+            shieldActive = false;
             shield.SetActive(false);
             UnityEngine.Debug.Log("Shield deactivated");
         }
@@ -104,28 +106,28 @@ namespace Completed
         {
         	GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity) as GameObject;
         	bullet.GetComponent<Rigidbody2D>().velocity = transform.right * bulletSpeed;
-		    Destroy(bullet, 2f);//bullet.GetComponent<Rigidbody2D>().AddForce(gameObject.transform.right * bulletSpeed);
+		    Destroy(bullet, 1f);
         }
         
         private void FireLeft()
         {
         	GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity) as GameObject;
         	bullet.GetComponent<Rigidbody2D>().velocity = transform.right * -1 * bulletSpeed;
-		    Destroy(bullet, 2f);//bullet.GetComponent<Rigidbody2D>().AddForce(gameObject.transform.right * bulletSpeed);
+		    Destroy(bullet, 1f);
         }
         
         private void FireUp()
         {
         	GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity) as GameObject;
         	bullet.GetComponent<Rigidbody2D>().velocity = transform.up * bulletSpeed;
-		    Destroy(bullet, 2f);//bullet.GetComponent<Rigidbody2D>().AddForce(gameObject.transform.forward * bulletSpeed);
+		    Destroy(bullet, 1f);
         }
         
         private void FireDown()
         {
         	GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity) as GameObject;
         	bullet.GetComponent<Rigidbody2D>().velocity = transform.up * -1 * bulletSpeed;
-		    Destroy(bullet, 2f);//bullet.GetComponent<Rigidbody2D>().AddForce(gameObject.transform.right * bulletSpeed);
+		    Destroy(bullet, 1f);
         }
     }
 }

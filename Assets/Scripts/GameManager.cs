@@ -295,6 +295,19 @@ namespace Completed
 			Debug.Log("exit reached in play");
 			SwitchState(State.LEVELCOMPLETED);
 		}
+		
+		public void RevealNemo()
+        {
+			boardScript.CreateNemo();
+        }
+        
+        public void NemoWasFound()
+        {
+        	// maybe add some fancy shit so it's better outcome than when we lose
+        	SwitchState(State.GAMEOVER);
+        	Debug.Log("told BM to instantiate Nemo");
+        }
+        
         private void PauseGame()
         {
             Time.timeScale = 0;

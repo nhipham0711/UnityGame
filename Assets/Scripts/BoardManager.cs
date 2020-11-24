@@ -30,6 +30,7 @@ namespace Completed
         public Count foodCount = new Count(3, 10);                      //Lower and upper limit for our random number of food items per level.
 
         public GameObject playerPrefab;
+        public GameObject nemoPrefab;
         public GameObject bossPrefab;
         public GameObject exitTile;
         //Prefab to spawn for exit.
@@ -334,6 +335,16 @@ namespace Completed
         public PlayerController GetPlayerController()
         {
         	return playerController;
+        }
+        
+        public void CreateNemo()
+        {
+        	int randomX = Random.Range(0, rows);
+        	int randomY = Random.Range(0, columns); 
+        	Debug.Log("x and y: " + randomX + " " + randomY); 
+        	GameObject nemo = Instantiate(nemoPrefab, new Vector3(randomX, randomY, 0), Quaternion.identity) as GameObject;
+        	nemo.transform.SetParent(boardHolder);
+        	Debug.Log("nemo at: " + nemo.transform.position);
         }
     }
 }

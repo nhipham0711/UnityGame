@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace Completed
+{
 public class Boss : MonoBehaviour
 {
+    public GameManager gm;
     public float speed;
     public float lineOfSite;
     public float shootingRange;
@@ -17,6 +20,7 @@ public class Boss : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
 
     }
 
@@ -51,10 +55,14 @@ public class Boss : MonoBehaviour
        if (col.gameObject.CompareTag("Projectile"))
         {
         	lifes--;
+        	Destroy(col.gameObject);
             GetComponent<SpriteRenderer>().color = Color.gray;
             if(lifes <= 0) { 
+            	Debug.Log("boss is dead");
+            	gm.RevealNemo();
                 Destroy(gameObject); 
             }
         } 
     }
+}
 }
