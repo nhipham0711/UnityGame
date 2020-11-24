@@ -205,7 +205,7 @@ MonoBehaviour:
   m_LightType: 3
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
-  m_Color: {r: 0.5927376, g: 0.6981132, b: 0.6668186, a: 1}
+  m_Color: {r: 0.8329477, g: 0.9245283, b: 0.8973933, a: 1}
   m_Intensity: 0.7
   m_LightVolumeOpacity: 0
   m_ApplyToSortingLayers: 00000000
@@ -288,7 +288,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -333,7 +333,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gm: {fileID: 0}
-  speed: 4
+  speed: 5
+  shield: {fileID: 3936535029407742497}
   bulletPrefab: {fileID: 3351464572226115269, guid: 450b52436a339b340821b2354c343ab7,
     type: 3}
   bulletSpeed: 8
@@ -390,7 +391,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8696869040990042473}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 256baefa42e25434995f61ef2e92636e, type: 3}
@@ -496,6 +497,21 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7116964675384935694, guid: 450b52436a339b340821b2354c343ab7,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.7126202
+      objectReference: {fileID: 0}
+    - target: {fileID: 7116964675384935694, guid: 450b52436a339b340821b2354c343ab7,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.8272494
+      objectReference: {fileID: 0}
+    - target: {fileID: 7116964675384935694, guid: 450b52436a339b340821b2354c343ab7,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.9622642
+      objectReference: {fileID: 0}
     - target: {fileID: 7764181852908266093, guid: 450b52436a339b340821b2354c343ab7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -576,6 +592,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Shield
       objectReference: {fileID: 0}
+    - target: {fileID: 6274448170450725196, guid: 748c2da8716f6a1448ec1eab9d4a537e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9098293195666885929, guid: 748c2da8716f6a1448ec1eab9d4a537e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -633,6 +654,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 748c2da8716f6a1448ec1eab9d4a537e, type: 3}
+--- !u!1 &3936535029407742497 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6274448170450725196, guid: 748c2da8716f6a1448ec1eab9d4a537e,
+    type: 3}
+  m_PrefabInstance: {fileID: 7039742625664619373}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2301781320230919748 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9098293195666885929, guid: 748c2da8716f6a1448ec1eab9d4a537e,

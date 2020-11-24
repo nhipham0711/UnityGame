@@ -52,6 +52,8 @@ namespace Completed
         private Vector3 startCell = new Vector3(1, 1, 0f);
         private Vector3 currentCell;
         private Vector3 checkCell;
+        
+        private PlayerController playerController;
 
         // every second cell to cuz for now the walls are the same size as the "corridors", aka to make sure there's place for them 
         // another option would be to make different 2D objects with walls (BoxCollider only on the surface of the wall) etc... 
@@ -167,7 +169,7 @@ namespace Completed
             LayoutWaterTiles();
             LayoutExitTile(level);
             LayoutInnerWalls();
-            Instantiate(playerPrefab);
+            playerController = Instantiate(playerPrefab).GetComponent<PlayerController>();
             //Instantiate a random number of food tiles based on minimum and maximum, at randomized positions.
             LayoutObjectAtRandom(foodTiles, foodCount.minimum, foodCount.maximum);
             Debug.Log("items placed");
@@ -327,6 +329,11 @@ namespace Completed
                 if (GameObjects[i].tag == "Wall" || GameObjects[i].tag == "Water" || GameObjects[i].tag == "Coin" || GameObjects[i].tag == "Player" || GameObjects[i].tag == "Exit")
                     Destroy(GameObjects[i]);
             }
+        }
+        
+        public PlayerController GetPlayerController()
+        {
+        	return playerController;
         }
     }
 }

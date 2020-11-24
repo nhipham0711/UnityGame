@@ -88,7 +88,7 @@ namespace Completed
             Debug.Log("shield chosen");
             // code for (color) shield for player
             
-            boardScript.playerPrefab.GetComponent<PlayerController>().useShield();
+            boardScript.GetPlayerController().useShield();
             // TODO: still include timeout or whatever
             SwitchState(State.PLAY);
         }

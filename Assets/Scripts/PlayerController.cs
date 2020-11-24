@@ -11,7 +11,7 @@ namespace Completed
         public GameManager gm;
         public float speed;
         private Rigidbody2D _rigidBody;
-        private GameObject shield;
+        [SerializeField] private GameObject shield;
 		[SerializeField] private GameObject bulletPrefab;
 		[SerializeField] private float bulletSpeed;
         private float horizontal;
@@ -21,7 +21,6 @@ namespace Completed
         void Start()
         {
             gm = GameObject.Find("GameManager").GetComponent<GameManager>();
-            shield = transform.GetChild(2).gameObject;
             UnityEngine.Debug.Log("found shield");
             shield.SetActive(false);
             _rigidBody = GetComponent<Rigidbody2D>();
@@ -118,14 +117,14 @@ namespace Completed
         private void FireUp()
         {
         	GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity) as GameObject;
-        	bullet.GetComponent<Rigidbody2D>().velocity = transform.forward * bulletSpeed;
-		    Destroy(bullet, 2f);//bullet.GetComponent<Rigidbody2D>().AddForce(gameObject.transform.right * bulletSpeed);
+        	bullet.GetComponent<Rigidbody2D>().velocity = transform.up * bulletSpeed;
+		    Destroy(bullet, 2f);//bullet.GetComponent<Rigidbody2D>().AddForce(gameObject.transform.forward * bulletSpeed);
         }
         
         private void FireDown()
         {
         	GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity) as GameObject;
-        	bullet.GetComponent<Rigidbody2D>().velocity = transform.forward * -1 * bulletSpeed;
+        	bullet.GetComponent<Rigidbody2D>().velocity = transform.up * -1 * bulletSpeed;
 		    Destroy(bullet, 2f);//bullet.GetComponent<Rigidbody2D>().AddForce(gameObject.transform.right * bulletSpeed);
         }
     }

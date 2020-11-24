@@ -167,8 +167,9 @@ public class Enemy : MonoBehaviour
           }
           else*/
        
-       /*  if (col.gameObject.CompareTag("Projectile"))
+       if (col.gameObject.CompareTag("Projectile"))
         {
+			Debug.Log("bullet hitting an enemy");
 			Destroy(col.gameObject);
             countDown--;
             if (countDown == 9) {
@@ -180,7 +181,7 @@ public class Enemy : MonoBehaviour
             else if(countDown<=0) { 
                 Die(); 
             }
-        } */
+        }
     }
 
 }
